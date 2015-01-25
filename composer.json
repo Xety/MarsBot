@@ -1,0 +1,24 @@
+{
+	"name": "xety/nozeframework",
+	"description": "A framework to create easyly xat bot.",
+	"keywords": ["xat","bot","framework"],
+	"homepage": "https://github.com/Xety/NozeFramework",
+	"type": "project",
+	"license": "MIT",
+	"require": {
+		"php": ">=5.4.16"
+	},
+	"autoload": {
+		"psr-4": {
+			"Noze\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Noze\\Test\\": "tests"
+		}
+	},
+	"config": {
+		"bin-dir" : "bin"
+	}
+}
