@@ -1,8 +1,8 @@
 {
-	"name": "xety/nozeframework",
+	"name": "xety/nozebot",
 	"description": "A framework to create easyly xat bot.",
 	"keywords": ["xat","bot","framework"],
-	"homepage": "https://github.com/Xety/NozeFramework",
+	"homepage": "https://github.com/Xety/NozeBot",
 	"type": "project",
 	"license": "MIT",
 	"require": {
