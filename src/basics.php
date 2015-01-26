@@ -18,15 +18,10 @@ if (!function_exists('debug')) {
 		if (!Configure::read('debug')) {
 			return;
 		}
-		$file = '';
-		$line = '';
-		$lineInfo = '';
 
 		$trace = Debugger::trace(['start' => 1, 'depth' => 2, 'format' => 'array']);
 		$search = [ROOT];
-		if (defined('CAKE_CORE_INCLUDE_PATH')) {
-			array_unshift($search, CAKE_CORE_INCLUDE_PATH);
-		}
+
 		$file = str_replace($search, '', $trace[0]['file']);
 		$line = $trace[0]['line'];
 		$lineInfo = sprintf('%s (line %s)', $file, $line);
