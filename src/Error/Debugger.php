@@ -219,9 +219,9 @@ class Debugger {
 			case 'float':
 			return '(float) ' . $var;
 			case 'string':
-			if (trim($var) === '') {
-				return "''";
-			}
+				if (trim($var) === '') {
+					return "''";
+				}
 			return "'" . $var . "'";
 			case 'array':
 			return static::_array($var, $depth - 1, $indent + 1);
@@ -314,8 +314,7 @@ class Debugger {
  *
  * @return string Exported array.
  */
-	protected static function _array(array $var, $depth, $indent)
-	{
+	protected static function _array(array $var, $depth, $indent) {
 		$out = "[";
 		$break = $end = null;
 		if (!empty($var)) {
