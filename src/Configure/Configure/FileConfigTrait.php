@@ -1,7 +1,7 @@
 <?php
-namespace Noze\Configure\Configure;
+namespace Mars\Configure\Configure;
 
-use Noze\Configure\Exception\Exception;
+use Mars\Configure\Exception\Exception;
 
 trait FileConfigTrait {
 
@@ -19,7 +19,7 @@ trait FileConfigTrait {
  *  as a plugin prefix.
  * @param bool $checkExists Whether to check if file exists. Defaults to false.
  *
- * @throws \Noze\Configure\Exception\Exception When files don't exist or when
+ * @throws \Mars\Configure\Exception\Exception When files don't exist or when
  *  files contain '..' as this could lead to abusive reads.
  *
  * @return string Full file path.

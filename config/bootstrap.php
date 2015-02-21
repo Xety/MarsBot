@@ -9,12 +9,12 @@ require ROOT . DS . 'vendor' . DS . 'autoload.php';
 
 require APP . 'basics.php';
 
-use Noze\Configure\Configure;
-use Noze\Configure\Configure\Engine\PhpConfig;
+use Mars\Configure\Configure;
+use Mars\Configure\Configure\Engine\PhpConfig;
 
 /**
  * Read configuration file and inject configuration into various
- * Noze classes.
+ * Mars classes.
  *
  * By default there is only one configuration file. It is often a good
  * idea to create multiple configuration files, and separate the configuration

@@ -1,9 +1,9 @@
 <?php
-namespace Noze\Configure\Configure\Engine;
+namespace Mars\Configure\Configure\Engine;
 
-use Noze\Configure\Configure\ConfigEngineInterface;
-use Noze\Configure\Configure\FileConfigTrait;
-use Noze\Configure\Exception\Exception;
+use Mars\Configure\Configure\ConfigEngineInterface;
+use Mars\Configure\Configure\FileConfigTrait;
+use Mars\Configure\Exception\Exception;
 
 /**
  * PHP engine allows Configure to load configuration values from
@@ -44,7 +44,7 @@ class PhpConfig implements ConfigEngineInterface {
  * @param string $key The identifier to read from. If the key has a . it will be treated
  *  as a plugin prefix.
  *
- * @throws \Noze\Configure\Exception\Exception when files don't exist or they don't contain `$config`.
+ * @throws \Mars\Configure\Exception\Exception when files don't exist or they don't contain `$config`.
  *  Or when files contain '..' as this could lead to abusive reads.
  *
  * @return array Parsed configuration values.

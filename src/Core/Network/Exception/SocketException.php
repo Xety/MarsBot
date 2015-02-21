@@ -1,5 +1,5 @@
 <?php
-namespace Noze\Core\Network\Exception;
+namespace Mars\Core\Network\Exception;
 
 use RuntimeException;
 

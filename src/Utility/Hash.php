@@ -1,8 +1,7 @@
 <?php
-namespace Noze\Utility;
+namespace Mars\Utility;
 
-class Hash
-{
+class Hash {
 
 /**
  * Get a single value specified by $path out of $data.

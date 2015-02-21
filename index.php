@@ -1,2 +1,2 @@
 <?php
-require 'src' . DIRECTORY_SEPARATOR . 'noze.php';
+require 'src' . DIRECTORY_SEPARATOR . 'mars.php';

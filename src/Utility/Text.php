@@ -1,5 +1,5 @@
 <?php
-namespace Noze\Utility;
+namespace Mars\Utility;
 
 use InvalidArgumentException;
 

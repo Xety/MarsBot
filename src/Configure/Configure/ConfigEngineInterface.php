@@ -1,5 +1,5 @@
 <?php
-namespace Noze\Configure\Configure;
+namespace Mars\Configure\Configure;
 
 interface ConfigEngineInterface {
 

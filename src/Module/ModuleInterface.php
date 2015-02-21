@@ -1,5 +1,5 @@
 <?php
-namespace Noze\Module;
+namespace Mars\Module;
 
 
 interface ModuleInterface {

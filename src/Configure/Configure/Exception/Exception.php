@@ -1,5 +1,5 @@
 <?php
-namespace Cake\Core\Exception;
+namespace Mars\Core\Exception;
 
 class Exception extends \RuntimeException {
 
@@ -19,7 +19,7 @@ class Exception extends \RuntimeException {
 	protected $_messageTemplate = '';
 
 /**
- * Array of headers to be passed to Noze\Network\Response::header()
+ * Array of headers to be passed to \Mars\Network\Response::header()
  *
  * @var array
  */
@@ -56,7 +56,7 @@ class Exception extends \RuntimeException {
 /**
  * Get/set the response header to be used
  *
- * See also Noze\Network\Response::header()
+ * See also \Mars\Network\Response::header()
  *
  * @param string|array|null $header An array of header strings or a single header string
  *  - an associative array of "header name" => "header value"

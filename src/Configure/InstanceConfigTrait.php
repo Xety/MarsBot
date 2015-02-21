@@ -1,9 +1,9 @@
 <?php
-namespace Noze\Configure;
+namespace Mars\Configure;
 
 use InvalidArgumentException;
-use Noze\Configure\Configure\Exception\Exception;
-use Noze\Utility\Hash;
+use Mars\Configure\Configure\Exception\Exception;
+use Mars\Utility\Hash;
 
 /**
  * A trait for reading and writing instance config.
@@ -59,7 +59,7 @@ trait InstanceConfigTrait {
  *
  * @return mixed Config value being read, or the object itself on write operations.
  *
- * @throws \Noze\Configure\Configure\Exception\Exception When trying to set a key that is invalid.
+ * @throws \Mars\Configure\Configure\Exception\Exception When trying to set a key that is invalid.
  */
 	public function config($key = null, $value = null, $merge = true) {
 		if (!$this->_configInitialized) {
@@ -144,7 +144,7 @@ trait InstanceConfigTrait {
  *   false to overwrite, defaults to false.
  * @return void
  *
- * @throws \Noze\Configure\Configure\Exception\Exception if attempting to clobber existing config
+ * @throws \Mars\Configure\Configure\Exception\Exception if attempting to clobber existing config
  */
 	protected function _configWrite($key, $value, $merge = false) {
 		if (is_string($key) && $value === null) {
@@ -201,7 +201,7 @@ trait InstanceConfigTrait {
  * @param string $key Key to delete.
  * @return void
  *
- * @throws \Noze\Configure\Configure\Exception\Exception if attempting to clobber existing config
+ * @throws \Mars\Configure\Configure\Exception\Exception if attempting to clobber existing config
  */
 	protected function _configDelete($key) {
 		if (strpos($key, '.') === false) {

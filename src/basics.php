@@ -1,6 +1,6 @@
 <?php
-use Noze\Configure\Configure;
-use Noze\Error\Debugger;
+use Mars\Configure\Configure;
+use Mars\Error\Debugger;
 
 if (!function_exists('debug')) {
 /**

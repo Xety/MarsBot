@@ -1,9 +1,9 @@
 <?php
 
-namespace Noze\Error;
+namespace Mars\Error;
 
-use Noze\Configure\Configure;
-use Noze\Utility\Hash;
+use Mars\Configure\Configure;
+use Mars\Utility\Hash;
 
 class Debugger {
 

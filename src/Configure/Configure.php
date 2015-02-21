@@ -1,11 +1,11 @@
 <?php
 
-namespace Noze\Configure;
+namespace Mars\Configure;
 
-use Noze\Configure\Configure\ConfigEngineInterface;
-use Noze\Configure\Configure\Engine\PhpConfig;
-use Noze\Configure\Exception\Exception;
-use Noze\Utility\Hash;
+use Mars\Configure\Configure\ConfigEngineInterface;
+use Mars\Configure\Configure\Engine\PhpConfig;
+use Mars\Configure\Exception\Exception;
+use Mars\Utility\Hash;
 
 class Configure {
 
@@ -130,7 +130,7 @@ class Configure {
  * Used to read and delete a variable from Configure.
  *
  * This is primarily used during bootstrapping to move configuration data
- * out of configure into the various other classes in Noze.
+ * out of configure into the various other classes in Mars.
  *
  * @param string $var The key to read and remove.
  *
@@ -258,7 +258,7 @@ class Configure {
  * @param array $keys The name of the top-level keys you want to dump.
  * This allows you save only some data stored in Configure.
  *
- * @throws \Noze\Configure\Exception\Exception if the adapter does not implement a `dump` method.
+ * @throws \Mars\Configure\Exception\Exception if the adapter does not implement a `dump` method.
  *
  * @return bool On success or error.
  */
@@ -296,18 +296,18 @@ class Configure {
 	}
 
 /**
- * Used to determine the current version of Noze.
+ * Used to determine the current version of Mars.
  *
  * Usage `Configure::version();`
  *
- * @return string Current version of Noze.
+ * @return string Current version of Mars.
  */
 	public static function version() {
-		if (!isset(static::$_values['Noze']['version'])) {
+		if (!isset(static::$_values['Mars']['version'])) {
 			require ROOT . DS . 'config' . DS . 'version.php';
 			static::write($config);
 		}
-		return static::$_values['Noze']['version'];
+		return static::$_values['Mars']['version'];
 	}
 
 /**

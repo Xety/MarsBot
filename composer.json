@@ -1,8 +1,8 @@
 {
-	"name": "xety/nozebot",
+	"name": "xety/marsbot",
 	"description": "A framework to create easyly xat bot.",
 	"keywords": ["xat","bot","framework"],
-	"homepage": "https://github.com/Xety/NozeBot",
+	"homepage": "https://github.com/Xety/MarsBot",
 	"type": "project",
 	"license": "MIT",
 	"require": {
@@ -10,12 +10,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Noze\\": "src"
+			"Mars\\": "src"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Noze\\Test\\": "tests"
+			"Mars\\Test\\": "tests"
 		}
 	},
 	"config": {

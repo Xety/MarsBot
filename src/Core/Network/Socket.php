@@ -1,9 +1,9 @@
 <?php
-namespace Noze\Core\Network;
+namespace Mars\Core\Network;
 
-use Noze\Configure\InstanceConfigTrait;
-use Noze\Core\Network\Exception\SocketException;
-use Noze\Validation\Validation;
+use Mars\Configure\InstanceConfigTrait;
+use Mars\Core\Network\Exception\SocketException;
+use Mars\Validation\Validation;
 
 class Socket {
 
@@ -51,7 +51,7 @@ class Socket {
 	public $lastError = [];
 
 /**
- * True if the socket stream is encrypted after a Noze\Core\Network\Socket::enableCrypto() call.
+ * True if the socket stream is encrypted after a \Mars\Core\Network\Socket::enableCrypto() call.
  *
  * @var bool
  */
@@ -99,7 +99,7 @@ class Socket {
  *
  * @return bool Success
  *
- * @throws \Noze\Core\Network\Exception\SocketException
+ * @throws \Mars\Core\Network\Exception\SocketException
  */
 	public function connect() {
 		if ($this->connection) {
@@ -343,7 +343,7 @@ class Socket {
  * @return bool True on success
  *
  * @throws \InvalidArgumentException When an invalid encryption scheme is chosen.
- * @throws \Noze\Core\Network\Exception\SocketException When attempting to enable SSL/TLS fails
+ * @throws \Mars\Core\Network\Exception\SocketException When attempting to enable SSL/TLS fails
  *
  * @see stream_socket_enable_crypto
  */
