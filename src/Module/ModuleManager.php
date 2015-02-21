@@ -232,7 +232,7 @@ class ModuleManager implements ArrayAccess, Countable {
  *
  * @param string $module The module to reload.
  *
- * @return true
+ * @return string
  */
 	public function reload($module) {
 		$module = Inflector::camelize($module);
@@ -366,7 +366,7 @@ class ModuleManager implements ArrayAccess, Countable {
  *
  * @param string $module The module to unlod.
  *
- * @return true
+ * @return bool
  */
 	public function offsetUnset($module) {
 		if (!isset($this->_loadedModules[$module])) {

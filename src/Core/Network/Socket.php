@@ -265,7 +265,7 @@ class Socket {
  *
  * @param int $length Optional buffer length to read; defaults to 1024.
  *
- * @return mixed Socket data
+ * @return false|string Socket data
  */
 	public function read($length = 1024) {
 		if (!$this->connected) {

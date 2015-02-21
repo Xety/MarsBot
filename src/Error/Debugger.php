@@ -2,7 +2,6 @@
 
 namespace Mars\Error;
 
-use Mars\Configure\Configure;
 use Mars\Utility\Hash;
 
 class Debugger {

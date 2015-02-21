@@ -1,7 +1,6 @@
 <?php
 namespace Mars\Configure;
 
-use InvalidArgumentException;
 use Mars\Configure\Configure\Exception\Exception;
 use Mars\Utility\Hash;
 
