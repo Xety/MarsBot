@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/Xety/MarsBot.svg?style=flat-square)](https://packagist.org/packages/xety/marsbot)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://packagist.org/packages/xety/marsbot)
 
-A micro-framework to create a bot for Xat.
+A micro-framework to create a bot for Xat. (Still in Dev)
 
 # Ressources
 * [Cake 3](https://github.com/cakephp/cakephp)
