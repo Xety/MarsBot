@@ -161,7 +161,7 @@ class Xml {
  * @param array|\Mars\Collection\Collection $input Array with data or a collection instance.
  * @param string|array $options The options to use or a string to use as format.
  *
- * @return \SimpleXMLElement|\DOMDocument SimpleXMLElement or DOMDocument
+ * @return \SimpleXMLElement|\DOMDocument|string SimpleXMLElement or DOMDocument or string
  *
  * @throws \Mars\Utility\Exception\XmlException
  */
@@ -181,12 +181,12 @@ class Xml {
 			$options = ['format' => (string)$options];
 		}
 		$defaults = [
-			'format' => 'tags',
+			'format' => 'attribute',
 			'version' => '1.0',
 			'encoding' => mb_internal_encoding(),
 			'return' => 'simplexml',
 			'pretty' => false,
-			'header' => true
+			'header' => false
 		];
 		$options += $defaults;
 
