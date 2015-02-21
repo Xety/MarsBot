@@ -1,8 +1,8 @@
 <?php
-namespace Mars\Core\Network;
+namespace Mars\Network;
 
 use Mars\Configure\InstanceConfigTrait;
-use Mars\Core\Network\Exception\SocketException;
+use Mars\Network\Exception\SocketException;
 use Mars\Validation\Validation;
 
 class Socket {
@@ -51,7 +51,7 @@ class Socket {
 	public $lastError = [];
 
 /**
- * True if the socket stream is encrypted after a \Mars\Core\Network\Socket::enableCrypto() call.
+ * True if the socket stream is encrypted after a \Mars\Network\Socket::enableCrypto() call.
  *
  * @var bool
  */
@@ -99,7 +99,7 @@ class Socket {
  *
  * @return bool Success
  *
- * @throws \Mars\Core\Network\Exception\SocketException
+ * @throws \Mars\Network\Exception\SocketException
  */
 	public function connect() {
 		if ($this->connection) {
@@ -343,7 +343,7 @@ class Socket {
  * @return bool True on success
  *
  * @throws \InvalidArgumentException When an invalid encryption scheme is chosen.
- * @throws \Mars\Core\Network\Exception\SocketException When attempting to enable SSL/TLS fails
+ * @throws \Mars\Network\Exception\SocketException When attempting to enable SSL/TLS fails
  *
  * @see stream_socket_enable_crypto
  */

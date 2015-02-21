@@ -1,5 +1,5 @@
 <?php
-namespace Mars\Core\Network\Exception;
+namespace Mars\Network\Exception;
 
 use RuntimeException;
 
