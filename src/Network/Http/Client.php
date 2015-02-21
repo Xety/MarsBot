@@ -1,9 +1,9 @@
 <?php
 namespace Mars\Network\Http;
 
-use Mars\Core\App;
 use Mars\Configure\Configure\Exception\Exception;
-use Mars\Configure\Configure\InstanceConfigTrait;
+use Mars\Configure\InstanceConfigTrait;
+use Mars\Core\App;
 use Mars\Network\Http\CookieCollection;
 use Mars\Network\Http\Request;
 use Mars\Utility\Hash;
@@ -398,7 +398,7 @@ class Client {
  *
  * @return array Headers to set on the request.
  *
- * @throws \Mars\Core\Exception\Exception When an unknown type alias is used.
+ * @throws \Mars\Configure\Configure\Exception\Exception When an unknown type alias is used.
  */
 	protected function _typeHeaders($type) {
 		if (strpos($type, '/') !== false) {
@@ -465,7 +465,7 @@ class Client {
  *
  * @return mixed Authentication strategy instance.
  *
- * @throws \Mars\Core\Exception\Exception when an invalid strategy is chosen.
+ * @throws \Mars\Configure\Configure\Exception\Exception when an invalid strategy is chosen.
  */
 	protected function _createAuth($auth, $options) {
 		if (empty($auth['type'])) {

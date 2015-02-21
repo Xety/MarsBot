@@ -11,4 +11,12 @@ return [
  */
 	'debug' => true,
 
+/**
+ * Configure basic information about the application.
+ *
+ * - namespace - The namespace to find app classes under.
+ */
+	'App' => [
+		'namespace' => 'Mars',
+	],
 ];
