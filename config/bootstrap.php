@@ -21,10 +21,10 @@ use Noze\Configure\Configure\Engine\PhpConfig;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-    Configure::config('default', new PhpConfig());
-    Configure::load('config', 'default', false);
+	Configure::config('default', new PhpConfig());
+	Configure::load('config', 'default', false);
 } catch (\Exception $e) {
-    die($e->getMessage() . "\n");
+	die($e->getMessage() . "\n");
 }
 
 /**
@@ -36,4 +36,4 @@ date_default_timezone_set('UTC');
 /**
  * Set time limit to unlimited or the script will ended itself.
  */
- set_time_limit(0);
+set_time_limit(0);

@@ -222,7 +222,7 @@ class Configure {
  * @param bool $merge if config files should be merged instead of simply overridden
  *
  * @return mixed false if file not found, void if load successful.
-  */
+ */
 	public static function load($key, $config = 'default', $merge = true) {
 		$engine = static::_getEngine($config);
 		if (!$engine) {
@@ -302,8 +302,7 @@ class Configure {
  *
  * @return string Current version of Noze.
  */
-	public static function version()
-	{
+	public static function version() {
 		if (!isset(static::$_values['Noze']['version'])) {
 			require ROOT . DS . 'config' . DS . 'version.php';
 			static::write($config);

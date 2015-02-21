@@ -6,12 +6,12 @@ use Noze\Configure\Configure\FileConfigTrait;
 use Noze\Configure\Exception\Exception;
 
 /**
-* PHP engine allows Configure to load configuration values from
-* files containing simple PHP arrays.
-*
-* Files compatible with PhpConfig should define a `$config` variable, that
-* contains all of the configuration data contained in the file.
-*/
+ * PHP engine allows Configure to load configuration values from
+ * files containing simple PHP arrays.
+ *
+ * Files compatible with PhpConfig should define a `$config` variable, that
+ * contains all of the configuration data contained in the file.
+ */
 class PhpConfig implements ConfigEngineInterface {
 
 	use FileConfigTrait;
@@ -44,9 +44,9 @@ class PhpConfig implements ConfigEngineInterface {
  * @param string $key The identifier to read from. If the key has a . it will be treated
  *  as a plugin prefix.
  *
- * @throws \Cake\Core\Exception\Exception when files don't exist or they don't contain `$config`.
-*  Or when files contain '..' as this could lead to abusive reads.
-*
+ * @throws \Noze\Configure\Exception\Exception when files don't exist or they don't contain `$config`.
+ *  Or when files contain '..' as this could lead to abusive reads.
+ *
  * @return array Parsed configuration values.
  */
 	public function read($key) {

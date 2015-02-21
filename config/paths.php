@@ -26,6 +26,16 @@ define('APP_DIR', 'src');
 define('APP', ROOT . DS . APP_DIR . DS);
 
 /**
+* Path to the temporary files directory.
+*/
+define('TMP', ROOT . DS . 'tmp' . DS);
+
+/**
  * Path to the config directory.
  */
 define('CONFIG', ROOT . DS . 'config' . DS);
+
+/**
+ * Path to the Modules directory.
+ */
+define('MODULE_DIR', APP . 'Module' . DS . 'Modules');

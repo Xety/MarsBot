@@ -9,11 +9,10 @@ if (!function_exists('debug')) {
  * Only runs if debug level is greater than zero.
  *
  * @param mixed $var Variable to show debug information for.
- * @param bool|null $showHtml If set to true, the method prints the debug data in a browser-friendly way.
- * @param bool $showFrom If set to true, the method prints from where the function was called.
  *
  * @return void
  */
+
 	function debug($var) {
 		if (!Configure::read('debug')) {
 			return;
@@ -36,7 +35,6 @@ TEXT;
 		printf($template, $lineInfo, $var);
 	}
 }
-
 if (!function_exists('pathSplit')) {
 /**
  * Splits a dot syntax path name into its path and class name.
@@ -50,6 +48,7 @@ if (!function_exists('pathSplit')) {
  *
  * @return array Array with 2 indexes. 0 => plugin name, 1 => class name
  */
+
 	function pathSplit($name, $dotAppend = false, $path = null) {
 		if (strpos($name, '.') !== false) {
 			$parts = explode('.', $name, 2);

@@ -209,42 +209,42 @@ class Text {
 		}
 		switch ($clean['method']) {
 			case 'html':
-			$clean += [
-				'word' => '[\w,.]+',
-				'andText' => true,
-				'replacement' => ''
-			];
-			$kleenex = sprintf(
-				'/[\s]*[a-z]+=(")(%s%s%s[\s]*)+\\1/i',
-				preg_quote($options['before'], '/'),
-				$clean['word'],
-				preg_quote($options['after'], '/')
-			);
-			$str = preg_replace($kleenex, $clean['replacement'], $str);
-			if ($clean['andText']) {
-				$options['clean'] = ['method' => 'text'];
-				$str = static::cleanInsert($str, $options);
-			}
+				$clean += [
+					'word' => '[\w,.]+',
+					'andText' => true,
+					'replacement' => ''
+				];
+				$kleenex = sprintf(
+					'/[\s]*[a-z]+=(")(%s%s%s[\s]*)+\\1/i',
+					preg_quote($options['before'], '/'),
+					$clean['word'],
+					preg_quote($options['after'], '/')
+				);
+				$str = preg_replace($kleenex, $clean['replacement'], $str);
+				if ($clean['andText']) {
+					$options['clean'] = ['method' => 'text'];
+					$str = static::cleanInsert($str, $options);
+				}
 			break;
 			case 'text':
-			$clean += [
-				'word' => '[\w,.]+',
-				'gap' => '[\s]*(?:(?:and|or)[\s]*)?',
-				'replacement' => ''
-			];
+				$clean += [
+					'word' => '[\w,.]+',
+					'gap' => '[\s]*(?:(?:and|or)[\s]*)?',
+					'replacement' => ''
+				];
 
-			$kleenex = sprintf(
-				'/(%s%s%s%s|%s%s%s%s)/',
-				preg_quote($options['before'], '/'),
-				$clean['word'],
-				preg_quote($options['after'], '/'),
-				$clean['gap'],
-				$clean['gap'],
-				preg_quote($options['before'], '/'),
-				$clean['word'],
-				preg_quote($options['after'], '/')
-			);
-			$str = preg_replace($kleenex, $clean['replacement'], $str);
+				$kleenex = sprintf(
+					'/(%s%s%s%s|%s%s%s%s)/',
+					preg_quote($options['before'], '/'),
+					$clean['word'],
+					preg_quote($options['after'], '/'),
+					$clean['gap'],
+					$clean['gap'],
+					preg_quote($options['before'], '/'),
+					$clean['word'],
+					preg_quote($options['after'], '/')
+				);
+				$str = preg_replace($kleenex, $clean['replacement'], $str);
 			break;
 		}
 		return $str;
