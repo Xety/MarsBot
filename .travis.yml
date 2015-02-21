@@ -8,6 +8,8 @@ matrix:
 before_script:
   - composer self-update
   - composer install --prefer-dist --no-interaction --dev
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
   - phpenv rehash
   - set +H
 
