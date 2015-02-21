@@ -14,7 +14,7 @@ before_script:
   - set +H
 
 script:
-  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --standard=CakePHP ./src ./tests; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --standard=CakePHP ./src; fi"
 
 notifications:
   email: false
