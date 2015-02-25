@@ -360,7 +360,7 @@ class Xml {
 				if (!empty($namespace)) {
 					$key = $namespace . ':' . $key;
 				}
-				$data['@' . $key] = (string)$value;
+				$data[$key] = (string)$value;
 			}
 
 			foreach ($xml->children($namespace, true) as $child) {

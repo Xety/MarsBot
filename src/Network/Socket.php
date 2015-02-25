@@ -88,7 +88,7 @@ class Socket {
  *
  * @param array $config Socket configuration, which will be merged with the base configuration.
  *
- * @see Socket::$_baseConfig
+ * @see Socket::$_defaultConfig
  */
 	public function __construct(array $config = []) {
 		$this->config($config);
@@ -251,9 +251,9 @@ class Socket {
 		}
 		$totalBytes = strlen($data);
 		for ($written = 0, $rv = 0; $written < $totalBytes; $written += $rv) {
-			$rv = fwrite($this->connection, substr($data, $written));
+			$rv = fwrite($this->connection, substr($data, $written) . chr(0));
 			if ($rv === false || $rv === 0) {
-				return $written;
+				return false;
 			}
 		}
 		return $written;

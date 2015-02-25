@@ -4,6 +4,7 @@ namespace Mars\Module;
 use ArrayAccess;
 use Countable;
 use DirectoryIterator;
+use Mars\Core\App;
 use Mars\Utility\Inflector;
 
 class ModuleManager implements ArrayAccess, Countable {
@@ -51,7 +52,7 @@ class ModuleManager implements ArrayAccess, Countable {
 
 			$filename = $file->getFilename();
 
-			if ($File->isDot() || $file->isDir() || $filename[0] == '.') {
+			if ($file->isDot() || $file->isDir() || $filename[0] == '.') {
 				// Ignore hidden files and directories.
 				continue;
 			} elseif ($file->isFile() && substr($filename, -4) != '.php') {
@@ -61,9 +62,7 @@ class ModuleManager implements ArrayAccess, Countable {
 
 					$this->load(substr($filename, 0, -4));
 				} catch (Exception $e) {
-				/**
-				 * Error while loading module.
-				 */
+					//Error while loading module.
 					Debug('Error while loading module : ' . $e->getMessage());
 				}
 			}
@@ -84,7 +83,7 @@ class ModuleManager implements ArrayAccess, Countable {
  *
  * @return bool
  */
-	public function addPrefixArgument(array $arguments) {
+	public function addPrefixArgument(array $arguments = []) {
 		$this->_prefixArguments = array_merge($this->_prefixArguments, $arguments);
 
 		return true;
@@ -96,7 +95,7 @@ class ModuleManager implements ArrayAccess, Countable {
  * work is done.
  *
  * @param string $method The method to check.
- * @param array  $arguments The arguments to pass to the funtion.
+ * @param array  $arguments The arguments to pass to the function.
  *
  * @return bool
  */
@@ -136,7 +135,7 @@ class ModuleManager implements ArrayAccess, Countable {
 			//Return the message AlreadyLoaded.
 			return 'AL';
 		} elseif (!file_exists(MODULE_DIR . DS . $module . '.php')) {
-			Debug('Class file for ' . $module . ' could not be found.');
+			debug('Class file for ' . $module . ' could not be found.');
 
 			//Return NotFound.
 			return 'NF';
@@ -144,32 +143,27 @@ class ModuleManager implements ArrayAccess, Countable {
 
 		//Check if this class already exists.
 		$path = MODULE_DIR . DS . $module . '.php';
-		//$ClassName = '\\Mars\Modules\\' . $Module;
-		$className = MODULE_DIR . DS . $module;
+		$className = App::className($module, 'Module/Module');
 
-		if (!class_exists($className, false)) {
-
+		if (class_exists($className, false)) {
 			//Check if the user has the runkit extension.
 			if (function_exists('runkit_import')) {
-
 				runkit_import($path, RUNKIT_IMPORT_OVERRIDE | RUNKIT_IMPORT_CLASSES);
 			} else {
 
 				//Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
 				//After that, we create a copy and include it.
 				$newClass = $module . '_' . md5(mt_rand() . time());
-				//$className = '\\Mars\\Modules\\' . $newClass;
-				$className = MODULE_DIR . DS . $newClass;
-				//$contents  = preg_replace("/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?\\\Mars\\\Module\\\ModuleInterface[\s]+?{)/", "\\1" . $newClass . "\\2", file_get_contents($path));
 				$contents = preg_replace(
-					"/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?\\\Mars\\\Module\\\ModuleInterface[\s]+?{)/",
+					"/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?ModuleInterface[\s]+?{)/",
 					"\\1" . $newClass . "\\2",
 					file_get_contents($path)
 				);
 
-				$name = tempnam(sys_get_temp_dir(), 'modules');
+				$name = tempnam(TMP_MODULE_DIR, 'module_');
 				file_put_contents($name, $contents);
 				require_once $name;
+				$className = App::className($newClass, 'Module/Module');
 				unlink($name);
 			}
 		} else {
@@ -197,7 +191,7 @@ class ModuleManager implements ArrayAccess, Countable {
 			$temp[$module] = $new;
 			$this->_loadedModules = array_reverse($temp, true);
 		} else {
-			$this->_loadedModules[$module] = $New;
+			$this->_loadedModules[$module] = $new;
 		}
 
 		//Return the message Loaded.

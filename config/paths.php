@@ -36,6 +36,21 @@ define('TMP', ROOT . DS . 'tmp' . DS);
 define('CONFIG', ROOT . DS . 'config' . DS);
 
 /**
- * Path to the Modules directory.
+ * Path to the Module directory.
  */
-define('MODULE_DIR', APP . 'Module' . DS . 'Modules');
+define('MODULE_DIR', APP . 'Module' . DS . 'Module');
+
+/**
+ * Path to the tmp Module directory.
+ */
+define('TMP_MODULE_DIR', TMP . 'Module');
+
+/**
+ * Path to the Packet directory.
+ */
+define('PACKET_DIR', APP . 'Packet' . DS . 'Packet');
+
+/**
+ * Path to the tmp Packet directory.
+ */
+define('TMP_PACKET_DIR', TMP . 'Packet');
