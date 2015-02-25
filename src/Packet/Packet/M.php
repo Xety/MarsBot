@@ -9,6 +9,14 @@ use Mars\Utility\User;
 
 class M implements PacketInterface {
 
+/**
+ * A message has been send in the room.
+ *
+ * @param \Mars\Network\Server $server The server instance.
+ * @param array $response The data received from the socket.
+ *
+ * @return bool
+ */
 	public function onM(Server $server, $response) {
 		//A message has been posted in main chat.
 		debug($response);

@@ -29,7 +29,7 @@ class Room {
 /**
  * Constructor.
  *
- * @param array $config Socket configuration, which will be merged with the base configuration.
+ * @param array $config Room configuration, which will be merged with the base configuration.
  *
  * @see Room::$_defaultConfig
  */

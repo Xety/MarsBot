@@ -34,7 +34,7 @@ class Network {
 /**
  * Constructor.
  *
- * @param array $config Socket configuration, which will be merged with the base configuration.
+ * @param array $config Network configuration, which will be merged with the base configuration.
  *
  * @see Network::$_defaultConfig
  */
