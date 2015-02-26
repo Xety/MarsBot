@@ -44,6 +44,7 @@ class Gp implements PacketInterface {
 		debug($gConfig);
 	}
 
+
 	protected function _hasPower($group, $powerId, $arg3 = null) {
 		if (!$group) {
 			return false;
