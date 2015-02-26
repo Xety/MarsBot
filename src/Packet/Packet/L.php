@@ -16,6 +16,7 @@ class L implements PacketInterface {
  * @return bool
  */
 	public function onL(Server $server, $data) {
+		debug($data);
 		if (isset($data['l']['u'])) {
 
 			$result = $server->UserManager->unload($data);

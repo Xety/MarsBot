@@ -16,6 +16,7 @@ class U implements PacketInterface {
  * @return bool
  */
 	public function onU(Server $server, $data) {
+		debug($data);
 		if (isset($data['u']['u'])) {
 
 			$result = $server->UserManager->load($data);
