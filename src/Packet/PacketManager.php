@@ -102,7 +102,6 @@ class PacketManager implements ArrayAccess, Countable {
 	public function __call($method, array $arguments) {
 		//Add out predefined prefix arguments to the total list.
 		$arguments = array_merge($this->_prefixArguments, $arguments);
-
 		foreach ($this->_loadedPackets as $packet) {
 
 			//Check if the packet has the method.
@@ -111,7 +110,7 @@ class PacketManager implements ArrayAccess, Countable {
 			}
 
 			//Check if we should stop calling packets.
-			if (call_user_func_array(array($packet['object'], $method), $arguments) === self::STOP) {
+			if (call_user_func_array([$packet['object'], $method], $arguments) === self::STOP) {
 				break;
 			}
 		}

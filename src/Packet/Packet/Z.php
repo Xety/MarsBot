@@ -16,7 +16,6 @@ class Z implements PacketInterface {
  * @return bool
  */
 	public function onZ(Server $server, $data) {
-		debug($data);
 		if (isset($data['z']['u']) && !empty($data['z']['u'])) {
 			$id = User::parseId($data['z']['u']);
 

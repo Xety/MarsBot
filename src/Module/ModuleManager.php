@@ -111,7 +111,7 @@ class ModuleManager implements ArrayAccess, Countable {
 			}
 
 			//Check if we should stop calling modules.
-			if (call_user_func_array(array($module['object'], $method), $arguments) === self::STOP) {
+			if (call_user_func_array([$module['object'], $method], $arguments) === self::STOP) {
 				break;
 			}
 		}

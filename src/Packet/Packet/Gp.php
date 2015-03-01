@@ -18,7 +18,7 @@ class Gp implements PacketInterface {
 	public function onGp(Server $server, $data) {
 		$gpa = explode('|', $data['gp']['p']);
 		$ll = 0;
-		$groupPowers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		$groupPowers = [];
 		$gConfig = [];
 
 		$countGpa = count($gpa);
@@ -41,9 +41,8 @@ class Gp implements PacketInterface {
 			}
 		}
 
-		debug($gConfig);
+		$server->Room->groupPowers = $gConfig;
 	}
-
 
 	protected function _hasPower($group, $powerId, $arg3 = null) {
 		if (!$group) {
@@ -75,6 +74,14 @@ class Gp implements PacketInterface {
 		return (!(($local6 & (1 << $local5)) == 0));
 	}
 
+/**
+ * Method to fix the Xat JSON....
+ * Yeah, because it's not a valid JSON for the fonction json_decode() in php.
+ *
+ * @param string $json The JSON to fix.
+ *
+ * @return string The JSON fixed.
+ */
 	protected function _fixJSON($json) {
 		//@codingStandardsIgnoreStart
 		$regex = <<<'REGEX'
@@ -85,7 +92,7 @@ class Gp implements PacketInterface {
 ~x
 REGEX;
 		//@codingStandardsIgnoreEnd
-		return preg_replace_callback($regex, function($matches) {
+		return preg_replace_callback($regex, function ($matches) {
 			return '"' . preg_replace('~\\\\.(*SKIP)(*F)|"~', '\\"', $matches[1]) . '"';
 		}, $json);
 	}

@@ -19,7 +19,6 @@ class M implements PacketInterface {
  */
 	public function onM(Server $server, $response) {
 		//A message has been posted in main chat.
-		debug($response);
 		$data['message'] = $response['m']['t'];
 
 		//Ignore all commands message starting with / (Like deleting a message, Typing etc).

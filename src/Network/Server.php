@@ -7,6 +7,7 @@ use Mars\Network\Network;
 use Mars\Network\Room;
 use Mars\Packet\PacketManager;
 use Mars\User\UserManager;
+use Mars\Utility\Inflector;
 use Mars\Utility\Xml;
 
 class Server {
@@ -26,6 +27,13 @@ class Server {
 	public function __construct() {
 		$this->Network = new Network();
 		$this->Room = new Room(['room' => Configure::read('Room.id')]);
+	}
+
+	public function startup($room = null, $host = null, $port = null) {
+		$this->Socket = $this->Room->join($this->Network->startup(), $room, $host, $port);
+
+		//Initialize the PacketManager.
+		$this->UserManager = new UserManager();
 
 		//Initialize the ModuleManager.
 		$modulesPriorities = [];
@@ -42,12 +50,6 @@ class Server {
 		}
 
 		$this->PacketManager = new PacketManager($packetsPriorities);
-	}
-
-	public function startup($host = null, $port = null) {
-		$this->Socket = $this->Room->join($this->Network->startup(), null, $host, $port);
-
-		$this->UserManager = new UserManager();
 
 		$this->ModuleManager->addPrefixArgument([$this]);
 		$this->PacketManager->addPrefixArgument([$this]);
@@ -74,7 +76,7 @@ class Server {
 			foreach ($packets as $packet) {
 				$packet[0] = Xml::toArray(Xml::build($packet[0]));
 				debug($packet);
-				$this->PacketManager->{'on' . $packet[2]}($packet[0]);
+				$this->PacketManager->{'on' . Inflector::camelize($packet[2])}($packet[0]);
 			}
 		}
 	}

@@ -16,7 +16,6 @@ class Idle implements PacketInterface {
  * @return void
  */
 	public function onIdle(Server $server, $data) {
-		debug($data);
 		if (isset($data['idle']['e'])) {
 			//We can also send a message to the user 1 every X minutes.
 			$server->Socket->disconnect();

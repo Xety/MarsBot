@@ -74,4 +74,13 @@ return [
 	'Commands' => [
 		'prefix' => '!'
 	],
+
+/**
+ * Configure information about Pastebin.
+ */
+	'Pastebin' => [
+		'apiDevKey' => 'zz',
+		'apiPastePrivate' => '1',
+		'apiPasteExpireDate' => '1M'
+	]
 ];

@@ -27,6 +27,20 @@ class Room {
 	];
 
 /**
+ * Group powers with their configuration assigned to the room.
+ *
+ * @var array
+ */
+	public $groupPowers = [];
+
+/**
+ * Informations about the room like background url, language, radio etc.
+ *
+ * @var array
+ */
+	public $roomInfos = [];
+
+/**
  * Constructor.
  *
  * @param array $config Room configuration, which will be merged with the base configuration.
@@ -79,10 +93,10 @@ class Room {
 			throw new SocketException('Can not connect to the socket ' . $config['host'] . ':' . $config['port'] . '.', E_WARNING);
 		}
 
-		$socket->write($this->_bluidConnectionPacket());
+		$socket->write($this->_bluidConnectionPacket($config['room']));
 		$result = Xml::toArray(Xml::build($socket->read()));
 
-		$socket->write($this->_buildJoinPacket($result, $network));
+		$socket->write($this->_buildJoinPacket($result, $network, $config['room']));
 
 		return $socket;
 	}
@@ -180,9 +194,13 @@ class Room {
  *
  * @throws \Mars\Network\Exception\RoomException When the $connection and/or $network variables are empty.
  */
-	protected function _buildJoinPacket(array $connection = [], array $network = []) {
+	protected function _buildJoinPacket(array $connection = [], array $network = [], $room = null) {
 		if (empty($connection) || empty($network)) {
 			throw new RoomException('The connection and/or network variable(s) can not be empty to build the J2 packet.', E_WARNING);
+		}
+
+		if (is_null($room)) {
+			$room = $this->config()['room'];
 		}
 
 		$j2 = [
@@ -213,7 +231,7 @@ class Room {
 		$j2['j2'] += [
 			'z' => 12,
 			'p' => 0,
-			'c' => $this->config()['room'],
+			'c' => $room,
 			'r' => '',
 			'f' => 6,
 			'e' => 1,
