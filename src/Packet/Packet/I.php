@@ -26,6 +26,13 @@ class I implements PacketInterface {
 		return false;
 	}
 
+/**
+ * Parse a string to get the information about the room.
+ *
+ * @param string $data String to parse.
+ *
+ * @return array
+ */
 	protected function _splitBackground($data = null) {
 		if (is_null($data) || !is_string($data)) {
 			return false;
@@ -37,8 +44,7 @@ class I implements PacketInterface {
 			'id',
 			'language',
 			'radio',
-			'color',
-			'wtf'
+			'color'
 		];
 
 		$config = explode(';=', $data);

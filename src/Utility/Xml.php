@@ -90,6 +90,39 @@ class Xml {
 	}
 
 /**
+ * Repair a XML string to a valid XML.
+ *
+ * Input :
+ * - <m   t="my message" u="123456789"i="626"   />
+ *
+ * Output:
+ * - <m t="my message" u="123456789" i="626" />
+ *
+ * @param string $input The XML to repair.
+ * @param array $options The options to use with the Tidy class.
+ *
+ * @return string
+ *
+ * @throws \Mars\Utility\Exception\XmlException
+ */
+	public static function repair($input, array $options = []) {
+		$defaults = [
+			'indent' => true,
+			'input-xml' => true,
+			'output-xml' => true,
+			'wrap' => false
+		];
+		$options += $defaults;
+
+		if (!extension_loaded('tidy')) {
+			throw new XmlException('The extension Tidy is not loaded.');
+		}
+
+		$tidy = new \Tidy();
+		return $tidy->repairString($input, $options);
+	}
+
+/**
  * Parse the input data and create either a SimpleXmlElement object or a DOMDocument.
  *
  * @param string $input The input to load.

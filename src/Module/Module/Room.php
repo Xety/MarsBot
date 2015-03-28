@@ -44,7 +44,7 @@ class Room implements ModuleInterface {
 		$commands = [
 			'room' => [
 				'params' => 2,
-				'syntax' => $this->_configCommands['prefix'] . 'Room [Go] [RoomId]'
+				'syntax' => $this->_configCommands['prefix'] . 'Room [Go] [RoomName]'
 			],
 			'chat' => [
 				'params' => 1,
@@ -124,10 +124,10 @@ class Room implements ModuleInterface {
 	protected function _handleRoom(Server $server, $message) {
 		switch($message->arguments[0]) {
 			case 'go':
-				$roomId = $message->arguments[1];
+				$roomName = $message->arguments[1];
 
 				$server->Socket->disconnect();
-				$server->startup($roomId);
+				$server->startup($roomName);
 			break;
 
 			default:

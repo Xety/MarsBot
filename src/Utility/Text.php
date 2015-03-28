@@ -6,6 +6,22 @@ use InvalidArgumentException;
 class Text {
 
 /**
+ * Get a valuie between 2 string in a string.
+ *
+ * @param string $string The string to search for.
+ * @param string $left   Delimiter left.
+ * @param string $right  Delimiter right.
+ *
+ * @return string
+ */
+	public static function getBetween($string, $left, $right) {
+		$start = stripos($string, $left) + strlen($left);
+		$length = stripos($string, $right, $start);
+
+		return substr($string, $start, $length - $start);
+	}
+
+/**
  * Generate a random UUID version 4
  *
  * @see http://www.ietf.org/rfc/rfc4122.txt

@@ -63,11 +63,11 @@ class Network {
 
 		//Send the login packet to xat.
 		$socket->write($this->_buildLoginPacket());
-		$result = Xml::toArray(Xml::build($socket->read()));
+		$result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
 		//Send private informations to xat.
 		$socket->write($this->_buildPrivatePacket());
-		$result += Xml::toArray(Xml::build($socket->read()));
+		$result += Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
 		$this->loginInfos = $result;
 

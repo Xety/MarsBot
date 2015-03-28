@@ -7,6 +7,9 @@
 
 A micro-framework to create a bot for Xat. (Still in Dev)
 
+# Dependencies
+* [Library Tidy](https://php.net/manual/en/book.tidy.php)
+
 # Ressources
 * [Cake 3](https://github.com/cakephp/cakephp)
 

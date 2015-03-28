@@ -5,6 +5,8 @@ use Mars\Configure\Configure;
 use Mars\Configure\InstanceConfigTrait;
 use Mars\Network\Exception\RoomException;
 use Mars\Network\Exception\SocketException;
+use Mars\Network\Http\Client;
+use Mars\Utility\Text;
 use Mars\Utility\Xml;
 
 class Room {
@@ -72,7 +74,7 @@ class Room {
 		}
 
 		if (!is_null($room)) {
-			$config['room'] = $room;
+			$config['room'] = $room['id'];
 		}
 
 		$socketPort = static::getPort($config['room']);
@@ -94,7 +96,7 @@ class Room {
 		}
 
 		$socket->write($this->_bluidConnectionPacket($config['room']));
-		$result = Xml::toArray(Xml::build($socket->read()));
+		$result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
 		$socket->write($this->_buildJoinPacket($result, $network, $config['room']));
 
@@ -156,6 +158,43 @@ class Room {
 	}
 
 /**
+ * Get the ID by the room name or the name by the ID.
+ *
+ * @param string|int $name The name/id of the room.
+ *
+ * @return false|bool
+ */
+	public static function getRoomInfo($name) {
+		if (is_numeric($name)) {
+			$url = 'http://xat.com/xat' . $name;
+		} else {
+			$url = 'http://xat.com/' . $name;
+		}
+
+		$http = new Client();
+		$response = $http->get($url);
+
+		$roomId = Text::getBetween($response->body, '<a href="http://xat.com/web_gear/chat/embed.php?id=', '&GroupName=');
+		$roomName = Text::getBetween($response->body, '&GroupName=', '"');
+		$title = Text::getBetween($response->body, '<title>', '</title>');
+		$title = explode(' ', $title);
+
+		if (!is_numeric($roomId) || $title[0] === 'xat') {
+			return false;
+		} else {
+			Configure::write('Room.id', $roomId);
+			Configure::write('Room.name', $roomName);
+
+			$config = [
+				'id'	=>	$roomId,
+				'name'	=>	$roomName
+			];
+
+			return $config;
+		}
+	}
+
+/**
  * Build the connection packet.
  *
  * - Order attributes :
@@ -189,6 +228,7 @@ class Room {
  *
  * @param array $connection The connection array.
  * @param array $network The login array.
+ * @param int $room The room id.
  *
  * @return string The packet generated.
  *

@@ -41,11 +41,9 @@ return [
  * Configure basic information about the room.
  *
  * - name - The name of the chat.
- * - id - The id of the chat.
  */
 	'Room' => [
 		'name' => 'xat_test2',
-		'id' => '2',
 	],
 
 /**
