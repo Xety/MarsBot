@@ -44,6 +44,15 @@ class Gp implements PacketInterface {
 		$server->Room->groupPowers = $gConfig;
 	}
 
+/**
+ * Check if a power is assigned or not.
+ *
+ * @param array $group The powers assigned.
+ * @param int $powerId The power to check
+ * @param [type] $arg3 I don't know wtf is that.
+ *
+ * @return bool
+ */
 	protected function _hasPower($group, $powerId, $arg3 = null) {
 		if (!$group) {
 			return false;

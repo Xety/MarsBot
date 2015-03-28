@@ -18,7 +18,7 @@ class Response implements ModuleInterface {
  *
  * @return bool
  *
- * @todo Split the message if the message is too long.
+ * Split the message if the message is too long.
  */
 	public function message(Server $server, $message = null) {
 		if (is_null($message)) {

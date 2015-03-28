@@ -56,7 +56,7 @@ class UserManager implements ArrayAccess, Countable {
  *
  * @return string
  *
- * @todo Can also be a $user['u']['u'].
+ * Can also be a $user['u']['u'].
  */
 	public function unload($user) {
 		if (is_array($user)) {
