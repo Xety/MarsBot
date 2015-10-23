@@ -1,6 +1,7 @@
 <?php
 namespace Mars\Module\Module;
 
+use Mars\Configure\Configure;
 use Mars\Module\ModuleInterface;
 use Mars\Network\Server;
 use Mars\Utility\Xml;
@@ -26,7 +27,7 @@ class Response implements ModuleInterface
             return false;
         }
 
-        $server->Socket->write(Xml::build(['m' => ['t' => $message, 'u' => $server->Network->loginInfos['v']['i']]]));
+        $server->Socket->write(Xml::build(['m' => ['t' => $message, 'u' => Configure::read('Bot.id')]]));
 
         return true;
     }
@@ -42,7 +43,7 @@ class Response implements ModuleInterface
      */
     public function answerTickle(Server $server, $id)
     {
-        $server->Socket->write(Xml::build(['z' => ['d' => $id, 'u' => $server->Network->loginInfos['v']['i'] . '_0', 't' => '/a_NF']]));
+        $server->Socket->write(Xml::build(['z' => ['d' => $id, 'u' => Configure::read('Bot.id') . '_0', 't' => '/a_NF']]));
 
         return true;
     }

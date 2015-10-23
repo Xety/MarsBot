@@ -5,6 +5,7 @@ use Mars\Configure\Configure;
 use Mars\Module\ModuleInterface;
 use Mars\Network\Http\Client;
 use Mars\Network\Server;
+use Mars\Utility\Xavi;
 
 class Developer implements ModuleInterface
 {
@@ -38,6 +39,10 @@ class Developer implements ModuleInterface
             'dev' => [
                 'params' => 2,
                 'syntax' => $prefix . 'Dev [Info] [Memory|Server]'
+            ],
+            'xavi' => [
+                'params' => 2,
+                'syntax' => $prefix . 'Xavi [Use] [UserId]'
             ]
         ];
 
@@ -94,6 +99,44 @@ class Developer implements ModuleInterface
             case 'dev':
                 $this->_handleDev($server, $message);
                 break;
+
+            case 'xavi':
+                $this->_handleXavi($server, $message);
+                break;
+        }
+    }
+
+    /**
+     * Handle the xavi command.
+     *
+     * @param \Mars\Network\Server $server The server instance.
+     * @param \Mars\Message\Message $message The message instance.
+     *
+     * @return bool|void
+     */
+    protected function _handleXavi(Server $server, $message)
+    {
+        switch ($message->arguments[0]) {
+            case 'use':
+                $xavi = Xavi::get($message->arguments[1]);
+
+                if ($xavi === false) {
+                    $server->ModuleManager->message('Error to get the xavi of the user ' . $message->arguments[1]);
+                    break;
+                }
+
+                $result = Xavi::post($xavi, $server->Room->loginInfos);
+
+                if ($result === false) {
+                    $server->ModuleManager->message('Error to save the xavi.');
+                    break;
+                }
+
+                $server->ModuleManager->message('The xavi has been saved successfully !');
+                break;
+
+            default:
+                $server->ModuleManager->message('Unknown command. Syntax: ' . $this->_commands[$message->command]['syntax']);
         }
     }
 

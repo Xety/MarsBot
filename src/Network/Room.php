@@ -11,7 +11,6 @@ use Mars\Utility\Xml;
 
 class Room
 {
-
     use InstanceConfigTrait;
 
     /**
@@ -42,6 +41,13 @@ class Room
      * @var array
      */
     public $roomInfos = [];
+
+    /**
+     * The response from xat before the j2.
+     *
+     * @var array
+     */
+    public $loginInfos = [];
 
     /**
      * Constructor.
@@ -101,7 +107,7 @@ class Room
         $socket->write($this->_bluidConnectionPacket($config['room']));
         $result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
-        debug($result);
+        $this->loginInfos = $result;
 
         $socket->write($this->_buildJoinPacket($result, $network, $config['room']));
 
@@ -251,8 +257,6 @@ class Room
         if (empty($connection) || empty($network)) {
             throw new RoomException('The connection and/or network variable(s) can not be empty to build the J2 packet.', E_WARNING);
         }
-
-        debug($network);
 
         if (is_null($room)) {
             $room = $this->config()['room'];

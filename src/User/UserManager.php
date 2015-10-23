@@ -45,7 +45,7 @@ class UserManager implements ArrayAccess, Countable
         $newUser = $this->_createUser($user);
 
         $this->_users[$newUser['id']] = $newUser;
-        debug($this->_users);
+
         //Return the message Loaded.
         return 'L';
     }

@@ -24,12 +24,12 @@ return [
  * Configure basic information about the bot.
  */
     'Bot' => [
-        'id' => 1,
+        'id' => 42,
         'username' => '',
         'password' => '',
         'name' => 'Bot Mars',
         'avatar' => '624',
-        'home' => 'http://github.com/Xety/MarsBot',
+        'home' => 'https://github.com/Xety/MarsBot',
 
         //Admins of the bot.
         'admin' => [
@@ -43,7 +43,18 @@ return [
  * - name - The name of the chat.
  */
     'Room' => [
-        'name' => 'xat_test2',
+        'name' => 'noze',
+    ],
+
+/**
+ * Configure the Xavi.
+ *
+ * - enabled - If true, the bot will connect to the room, change the xavi then disconnect.
+ * - id - The id of the user where to get the xavi.
+ */
+    'Xavi' => [
+        'enabled' => false,
+        'id' => 804
     ],
 
 /**

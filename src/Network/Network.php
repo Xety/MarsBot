@@ -24,13 +24,6 @@ class Network
     ];
 
     /**
-     * The response from xat after the login.
-     *
-     * @var array
-     */
-    public $loginInfos = [];
-
-    /**
      * Constructor.
      *
      * @param array $config Network configuration, which will be merged with the base configuration.
@@ -69,8 +62,6 @@ class Network
         //Send private informations to xat.
         $socket->write($this->_buildPrivatePacket());
         $result += Xml::toArray(Xml::build(Xml::repair($socket->read())));
-
-        $this->loginInfos = $result;
 
         return $result;
     }
