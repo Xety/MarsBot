@@ -5,23 +5,24 @@ use Mars\Network\Server;
 use Mars\Packet\PacketInterface;
 use Mars\Utility\User;
 
-class U implements PacketInterface {
+class U implements PacketInterface
+{
+    /**
+     * An user has joined the room.
+     *
+     * @param \Mars\Network\Server $server The server instance.
+     * @param array $data The data received from the socket.
+     *
+     * @return bool
+     */
+    public function onU(Server $server, $data)
+    {
+        if (isset($data['u']['u'])) {
+            $server->UserManager->load($data);
 
-/**
- * An user has joined the room.
- *
- * @param \Mars\Network\Server $server The server instance.
- * @param array $data The data received from the socket.
- *
- * @return bool
- */
-	public function onU(Server $server, $data) {
-		if (isset($data['u']['u'])) {
-			$server->UserManager->load($data);
+            return true;
+        }
 
-			return true;
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

@@ -21,10 +21,10 @@ use Mars\Configure\Configure\Engine\PhpConfig;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-	Configure::config('default', new PhpConfig());
-	Configure::load('config', 'default', false);
+    Configure::config('default', new PhpConfig());
+    Configure::load('config', 'default', false);
 } catch (\Exception $e) {
-	die($e->getMessage() . "\n");
+    die($e->getMessage() . "\n");
 }
 
 /**

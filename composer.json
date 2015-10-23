@@ -1,27 +1,28 @@
 {
-	"name": "xety/marsbot",
-	"description": "A framework to create easyly xat bot.",
-	"keywords": ["xat","bot","framework"],
-	"homepage": "https://github.com/Xety/MarsBot",
-	"type": "project",
-	"license": "MIT",
-	"require": {
-		"php": ">=5.4.16"
-	},
-	"require-dev": {
-		"cakephp/cakephp-codesniffer": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Mars\\": "src"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Mars\\Test\\": "tests"
-		}
-	},
-	"config": {
-		"bin-dir" : "bin"
-	}
+    "name": "xety/marsbot",
+    "description": "A framework to create easyly xat bot.",
+    "keywords": ["xat","bot","framework"],
+    "homepage": "https://github.com/Xety/MarsBot",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.16"
+    },
+    "require-dev": {
+        "cakephp/cakephp-codesniffer": "*",
+        "fabpot/php-cs-fixer": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mars\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mars\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "bin-dir" : "bin"
+    }
 }

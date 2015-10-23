@@ -1,5 +1,6 @@
 <?php
 namespace Mars\Module;
 
-interface ModuleInterface {
+interface ModuleInterface
+{
 }
