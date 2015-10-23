@@ -15,7 +15,7 @@ class M implements PacketInterface
      * @param \Mars\Network\Server $server The server instance.
      * @param array $response The data received from the socket.
      *
-     * @return bool
+     * @return void|bool
      */
     public function onM(Server $server, $response)
     {
@@ -43,5 +43,7 @@ class M implements PacketInterface
 
         $message = new Message($data);
         $server->ModuleManager->onChannelMessage($message);
+
+        return true;
     }
 }

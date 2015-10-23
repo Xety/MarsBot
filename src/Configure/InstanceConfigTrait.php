@@ -150,7 +150,8 @@ trait InstanceConfigTrait
     protected function _configWrite($key, $value, $merge = false)
     {
         if (is_string($key) && $value === null) {
-            return $this->_configDelete($key);
+            $this->_configDelete($key);
+            return;
         }
 
         if ($merge) {

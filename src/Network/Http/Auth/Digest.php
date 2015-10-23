@@ -65,7 +65,7 @@ class Digest
      * @param \Mars\Network\Http\Request $request The request object.
      * @param array $credentials Authentication credentials.
      *
-     * @return Array modified credentials.
+     * @return array modified credentials.
      */
     protected function _getServerInfo(Request $request, $credentials)
     {
