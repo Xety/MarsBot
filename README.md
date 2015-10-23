@@ -7,9 +7,17 @@
 
 A micro-framework to create a bot for Xat. (Still in Dev)
 
-# Dependencies
+# Requirements
 * [Library Tidy](https://php.net/manual/en/book.tidy.php)
     * Installation on Linux : `sudo apt-get install php5-tidy`
+* [Composer](https://php.net/manual/en/book.tidy.php)
+    * Installation on Windows : [Composer-Setup.exe](https://getcomposer.org/Composer-Setup.exe)
+    * Installation on Mac/Linux :
+        * 1) `curl -sS https://getcomposer.org/installer | php`
+        * 2) `mv composer.phar /usr/local/bin/composer`
+
+# Installation
+ `composer create-project --prefer-dist xety/marsbot <application_name>`
 
 # Ressources
 * [Cake 3](https://github.com/cakephp/cakephp)
