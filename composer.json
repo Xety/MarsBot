@@ -9,7 +9,7 @@
         "php": ">=5.4.16"
     },
     "require-dev": {
-        "cakephp/cakephp-codesniffer": "*",
+        "cakephp/cakephp-codesniffer": "dev-master",
         "fabpot/php-cs-fixer": "1.*"
     },
     "autoload": {
@@ -21,8 +21,5 @@
         "psr-4": {
             "Mars\\Test\\": "tests"
         }
-    },
-    "config": {
-        "bin-dir" : "bin"
     }
 }
