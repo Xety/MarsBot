@@ -1,8 +1,8 @@
 filter:
-	paths: [src/*]
-	excluded_paths: [bin/*, config/*, logs/*, tests/*, tmp/*]
+  paths: [src/*]
+  excluded_paths: [bin/*, config/*, logs/*, tests/*, tmp/*]
 tools:
-	php_analyzer: true
+  php_analyzer: true
 checks:
-	php:
-		code_rating: true
+  php:
+    code_rating: true
