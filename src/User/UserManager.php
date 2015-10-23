@@ -3,7 +3,6 @@ namespace Mars\User;
 
 use ArrayAccess;
 use Countable;
-use Mars\Utility\Inflector;
 use Mars\Utility\User;
 
 class UserManager implements ArrayAccess, Countable

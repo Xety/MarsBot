@@ -229,7 +229,7 @@ class Configure
      * @param string $config Name of the configured engine to use to read the resource identified by $key.
      * @param bool $merge if config files should be merged instead of simply overridden
      *
-     * @return mixed false if file not found, void if load successful.
+     * @return bool if file not found, void if load successful.
      */
     public static function load($key, $config = 'default', $merge = true)
     {

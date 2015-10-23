@@ -89,7 +89,7 @@ class Basic implements ModuleInterface
      * @param \Mars\Network\Server $server The server instance.
      * @param \Mars\Message\Message $message The message instance.
      *
-     * @return bool|void
+     * @return false|void
      */
     protected function _handleQuery(Server $server, $message)
     {

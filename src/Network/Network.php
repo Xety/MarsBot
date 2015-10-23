@@ -3,7 +3,6 @@ namespace Mars\Network;
 
 use Mars\Configure\Configure;
 use Mars\Configure\InstanceConfigTrait;
-use Mars\Network\Exception\NetworkException;
 use Mars\Network\Exception\SocketException;
 use Mars\Utility\Xml;
 

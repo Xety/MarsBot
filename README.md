@@ -9,6 +9,7 @@ A micro-framework to create a bot for Xat. (Still in Dev)
 
 # Dependencies
 * [Library Tidy](https://php.net/manual/en/book.tidy.php)
+    * Installation on Linux : `sudo apt-get install php5-tidy`
 
 # Ressources
 * [Cake 3](https://github.com/cakephp/cakephp)

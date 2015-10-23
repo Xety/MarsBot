@@ -1,7 +1,6 @@
 <?php
 namespace Mars\Packet\Packet;
 
-use Mars\Configure\Configure;
 use Mars\Network\Server;
 use Mars\Packet\PacketInterface;
 
