@@ -272,6 +272,66 @@ Total Threads Count : ' . $threadsCount . ' threads';
             $phrase = 'Server info : ' . $response->body;
 
             return $phrase;
+        } elseif (PHP_OS == 'Linux') {
+            $version = explode('.', PHP_VERSION);
+            $version = 'PHP Version : ' . $version[0] . '.' . $version[1];
+
+            /*
+            // File that has it
+            $file = '/proc/cpuinfo';
+            // Not there?
+            if (!is_file($file) || !is_readable($file)) {
+                return 'Unknown';
+            }
+
+            // Get contents
+            $contents = trim(@file_get_contents($file));
+
+            // Lines
+            $lines = explode("\n", $contents);
+
+            // Holder for current CPU info
+            $cur_cpu = [];
+
+            // Go through lines in file
+            $num_lines = count($lines);
+
+            for ($i = 0; $i < $num_lines; $i++) {
+
+                // Info here
+                $line = explode(':', $lines[$i], 2);
+                if (!array_key_exists(1, $line))
+                    continue;
+                $key   = trim($line[0]);
+                $value = trim($line[1]);
+
+                // What we want are MHZ, Vendor, and Model.
+                switch ($key) {
+                    // CPU model
+                    case 'model name':
+                    case 'cpu':
+                    case 'Processor':
+                        $cur_cpu['Model'] = $value;
+                        break;
+                    // Speed in MHz
+                    case 'cpu MHz':
+                        $cur_cpu['MHz'] = $value;
+                        break;
+                    case 'Cpu0ClkTck': // Old sun boxes
+                        $cur_cpu['MHz'] = hexdec($value) / 1000000;
+                        break;
+                    // Brand/vendor
+                    case 'vendor_id':
+                        $cur_cpu['Vendor'] = $value;
+                        break;
+                    // CPU Cores
+                    case 'cpu cores':
+                        $cur_cpu['Cores'] = $value;
+                        break;
+                }
+            }*/
+
+            return $version;
         } else {
             return 'This function work only on a Windows system. :(';
         }

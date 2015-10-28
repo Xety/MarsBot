@@ -129,8 +129,11 @@ class Server
     protected function _handleResponse($response)
     {
         if ($response != false) {
-            if ($response{(strlen($response) - 2)} != '>') {
+            $length = strlen($response);
+
+            while ($response{$length - 1} != '>' && $response{$length - 1} != chr(0)) {
                 $response .= $this->Socket->read();
+                $length = strlen($response);
             }
 
             $packets = [];

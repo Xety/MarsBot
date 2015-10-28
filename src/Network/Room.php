@@ -213,7 +213,7 @@ class Room
      * Build the connection packet.
      *
      * - Order attributes :
-     * w, r, m, s, p, v, u
+     * w, r, m, s, p, v, u, z
      *
      * @param int $room The room ID.
      *
