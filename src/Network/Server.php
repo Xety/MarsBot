@@ -64,6 +64,25 @@ class Server
         $this->Room = new Room();
         $this->Network = new Network();
 
+        //Initialize the UserManager.
+        $this->UserManager = new UserManager();
+
+        //Initialize the ModuleManager.
+        $modulesPriorities = [];
+        if (Configure::check('Modules.priority')) {
+            $modulesPriorities = Configure::read('Modules.priority');
+        }
+
+        $this->ModuleManager = new ModuleManager($modulesPriorities);
+
+        //Initialize the PacketManager.
+        $packetsPriorities = [];
+        if (Configure::check('Packets.priority')) {
+            $packetsPriorities = Configure::read('Packets.priority');
+        }
+
+        $this->PacketManager = new PacketManager($packetsPriorities);
+
         $this->login();
     }
 
@@ -104,27 +123,8 @@ class Server
         $this->Socket = $array['socket'];
         $this->Network->loginInfos = $array['network'];
 
-        //Initialize the UserManager.
-        $this->UserManager = new UserManager();
-
-        //Initialize the ModuleManager.
-        $modulesPriorities = [];
-        if (Configure::check('Modules.priority')) {
-            $modulesPriorities = Configure::read('Modules.priority');
-        }
-
-        $this->ModuleManager = new ModuleManager($modulesPriorities);
-
-        //Initialize the PacketManager.
-        $packetsPriorities = [];
-        if (Configure::check('Packets.priority')) {
-            $packetsPriorities = Configure::read('Packets.priority');
-        }
-
-        $this->PacketManager = new PacketManager($packetsPriorities);
-
-        $this->ModuleManager->addPrefixArgument([$this]);
-        $this->PacketManager->addPrefixArgument([$this]);
+        $this->ModuleManager->addPrefixArgument($this);
+        $this->PacketManager->addPrefixArgument($this);
 
         //Handle the loop.
         $this->_handleWhile();

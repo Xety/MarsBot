@@ -38,7 +38,7 @@ class Developer implements ModuleInterface
         $commands = [
             'dev' => [
                 'params' => 2,
-                'syntax' => $prefix . 'Dev [Info] [Memory|Server]'
+                'syntax' => $prefix . 'Dev [Info] [Memory|Server|Files]'
             ],
             'xavi' => [
                 'params' => 2,
@@ -166,6 +166,12 @@ class Developer implements ModuleInterface
 
                         $server->ModuleManager->message($serverInfo);
                         break;
+
+                    case 'files':
+                        $files = count(get_included_files());
+
+                        $server->ModuleManager->message('There\'s ' . $files . ' files loaded in memory.');
+                        break;
                 }
                 break;
 
@@ -179,7 +185,7 @@ class Developer implements ModuleInterface
      *
      * @return string
      */
-    protected function _getServerInfo()
+    public function _getServerInfo()
     {
         if (stristr(PHP_OS, 'win')) {
             $wmi = new \COM("Winmgmts://");
@@ -274,9 +280,9 @@ Total Threads Count : ' . $threadsCount . ' threads';
             return $phrase;
         } elseif (PHP_OS == 'Linux') {
             $version = explode('.', PHP_VERSION);
-            $version = 'PHP Version : ' . $version[0] . '.' . $version[1];
+            $phrase = 'PHP Version : ' . $version[0] . '.' . $version[1];
 
-            /*
+
             // File that has it
             $file = '/proc/cpuinfo';
             // Not there?
@@ -285,24 +291,25 @@ Total Threads Count : ' . $threadsCount . ' threads';
             }
 
             // Get contents
-            $contents = trim(@file_get_contents($file));
+            $contents = trim(file_get_contents($file));
 
             // Lines
             $lines = explode("\n", $contents);
 
             // Holder for current CPU info
-            $cur_cpu = [];
+            $cpu = [];
 
             // Go through lines in file
-            $num_lines = count($lines);
+            $numLines = count($lines);
 
-            for ($i = 0; $i < $num_lines; $i++) {
-
-                // Info here
+            for ($i = 0; $i < $numLines; $i++) {
                 $line = explode(':', $lines[$i], 2);
-                if (!array_key_exists(1, $line))
+
+                if (!array_key_exists(1, $line)) {
                     continue;
-                $key   = trim($line[0]);
+                }
+
+                $key = trim($line[0]);
                 $value = trim($line[1]);
 
                 // What we want are MHZ, Vendor, and Model.
@@ -311,27 +318,29 @@ Total Threads Count : ' . $threadsCount . ' threads';
                     case 'model name':
                     case 'cpu':
                     case 'Processor':
-                        $cur_cpu['Model'] = $value;
+                        $cpu['Model'] = $value;
                         break;
                     // Speed in MHz
                     case 'cpu MHz':
-                        $cur_cpu['MHz'] = $value;
+                        $cpu['MHz'] = $value;
                         break;
                     case 'Cpu0ClkTck': // Old sun boxes
-                        $cur_cpu['MHz'] = hexdec($value) / 1000000;
+                        $cpu['MHz'] = hexdec($value) / 1000000;
                         break;
                     // Brand/vendor
                     case 'vendor_id':
-                        $cur_cpu['Vendor'] = $value;
+                        $cpu['Vendor'] = $value;
                         break;
                     // CPU Cores
                     case 'cpu cores':
-                        $cur_cpu['Cores'] = $value;
+                        $cpu['Cores'] = $value;
                         break;
                 }
-            }*/
+            }
 
-            return $version;
+            $phrase .= " Processor : " . $cpu['Model'];
+
+            return $phrase;
         } else {
             return 'This function work only on a Windows system. :(';
         }

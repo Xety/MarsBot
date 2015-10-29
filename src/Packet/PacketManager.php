@@ -31,11 +31,11 @@ class PacketManager implements ArrayAccess, Countable
     protected $_loadedPackets = [];
 
     /**
-     * A list of optional arguments that should be passed every call.
+     * An argument that should be passed every call.
      *
      * @var array
      */
-    protected $_prefixArguments = [];
+    protected $_prefixArgument;
 
     /**
      * Constructor, loads all Packets in the Packet directory.
@@ -77,15 +77,15 @@ class PacketManager implements ArrayAccess, Countable
     }
 
     /**
-     * List of arguments that should be passed on to Packets.
+     * Argument that should be passed into Packets.
      *
-     * @param array $arguments List of arguments.
+     * @param array $argument The arguments to add.
      *
      * @return bool
      */
-    public function addPrefixArgument(array $arguments = [])
+    public function addPrefixArgument($argument)
     {
-        $this->_prefixArguments = array_merge($this->_prefixArguments, $arguments);
+        $this->_prefixArgument = $argument;
 
         return true;
     }
@@ -102,8 +102,9 @@ class PacketManager implements ArrayAccess, Countable
      */
     public function __call($method, array $arguments)
     {
-        //Add out predefined prefix arguments to the total list.
-        $arguments = array_merge($this->_prefixArguments, $arguments);
+        //Add out predefined prefix argument to the total list.
+        array_unshift($arguments, $this->_prefixArgument);
+
         foreach ($this->_loadedPackets as $packet) {
             //Check if the packet has the method.
             if (!method_exists($packet['object'], $method)) {
@@ -136,7 +137,7 @@ class PacketManager implements ArrayAccess, Countable
             //Return the message AlreadyLoaded.
             return 'AL';
         } elseif (!file_exists(PACKET_DIR . DS . $packet . '.php')) {
-            Debug('Class file for ' . $packet . ' could not be found.');
+            debug('Class file for ' . $packet . ' could not be found.');
 
             //Return NotFound.
             return 'NF';
@@ -146,30 +147,21 @@ class PacketManager implements ArrayAccess, Countable
         $path = PACKET_DIR . DS . $packet . '.php';
         $className = App::className($packet, 'Packet/Packet');
 
-        if (class_exists($className, false)) {
-            //Check if the user has the runkit extension.
-            if (function_exists('runkit_import')) {
-                runkit_import($path, RUNKIT_IMPORT_OVERRIDE | RUNKIT_IMPORT_CLASSES);
+        //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
+        //After that, we create a copy and include it.
+        $newClass = $packet . '_' . md5(mt_rand() . time());
+        $contents = preg_replace(
+            "/(class[\s]+?)" . $packet . "([\s]+?implements[\s]+?PacketInterface[\s]+?{)/",
+            "\\1" . $newClass . "\\2",
+            file_get_contents($path)
+        );
 
-            } else {
-                //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
-                //After that, we create a copy and include it.
-                $newClass = $packet . '_' . md5(mt_rand() . time());
-                $contents = preg_replace(
-                    "/(class[\s]+?)" . $packet . "([\s]+?implements[\s]+?PacketInterface[\s]+?{)/",
-                    "\\1" . $newClass . "\\2",
-                    file_get_contents($path)
-                );
+        $name = tempnam(TMP_PACKET_DIR, $packet . '_');
+        file_put_contents($name, $contents);
+        require_once $name;
 
-                $name = tempnam(TMP_PACKET_DIR, 'packet_');
-                file_put_contents($name, $contents);
-                require_once $name;
-                $className = App::className($newClass, 'Packet/Packet');
-                unlink($name);
-            }
-        } else {
-            require_once $path;
-        }
+        $className = App::className($newClass, 'Packet/Packet');
+        unlink($name);
 
         $objectPacket = new $className();
         $new = [

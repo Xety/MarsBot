@@ -31,11 +31,11 @@ class ModuleManager implements ArrayAccess, Countable
     protected $_loadedModules = [];
 
     /**
-     * A list of optional arguments that should be passed every call.
+     * An argument that should be passed every call.
      *
      * @var array
      */
-    protected $_prefixArguments = [];
+    protected $_prefixArgument;
 
     /**
      * Constructor, loads all Modules in the Module directory.
@@ -62,7 +62,7 @@ class ModuleManager implements ArrayAccess, Countable
                     $this->load(substr($filename, 0, -4));
                 } catch (Exception $e) {
                     //Error while loading module.
-                    Debug('Error while loading module : ' . $e->getMessage());
+                    debug('Error while loading module : ' . $e->getMessage());
                 }
             }
         }
@@ -77,15 +77,15 @@ class ModuleManager implements ArrayAccess, Countable
     }
 
     /**
-     * List of arguments that should be passed on to Modules.
+     * Argument that should be passed into Modules.
      *
-     * @param array $arguments List of arguments.
+     * @param array $argument The arguments to add.
      *
      * @return bool
      */
-    public function addPrefixArgument(array $arguments = [])
+    public function addPrefixArgument($argument)
     {
-        $this->_prefixArguments = array_merge($this->_prefixArguments, $arguments);
+        $this->_prefixArgument = $argument;
 
         return true;
     }
@@ -102,8 +102,8 @@ class ModuleManager implements ArrayAccess, Countable
      */
     public function __call($method, array $arguments)
     {
-        //Add out predefined prefix arguments to the total list.
-        $arguments = array_merge($this->_prefixArguments, $arguments);
+        //Add out predefined prefix argument to the total list.
+        array_unshift($arguments, $this->_prefixArgument);
 
         foreach ($this->_loadedModules as $module) {
             //Check if the module has the method.
@@ -147,30 +147,21 @@ class ModuleManager implements ArrayAccess, Countable
         $path = MODULE_DIR . DS . $module . '.php';
         $className = App::className($module, 'Module/Module');
 
-        if (class_exists($className, false)) {
-            //Check if the user has the runkit extension.
-            if (function_exists('runkit_import')) {
-                runkit_import($path, RUNKIT_IMPORT_OVERRIDE | RUNKIT_IMPORT_CLASSES);
+        //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
+        //After that, we create a copy and include it.
+        $newClass = $module . '_' . md5(mt_rand() . time());
+        $contents = preg_replace(
+            "/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?ModuleInterface[\s]+?{)/",
+            "\\1" . $newClass . "\\2",
+            file_get_contents($path)
+        );
 
-            } else {
-                //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
-                //After that, we create a copy and include it.
-                $newClass = $module . '_' . md5(mt_rand() . time());
-                $contents = preg_replace(
-                    "/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?ModuleInterface[\s]+?{)/",
-                    "\\1" . $newClass . "\\2",
-                    file_get_contents($path)
-                );
+        $name = tempnam(TMP_MODULE_DIR, $module . '_');
+        file_put_contents($name, $contents);
 
-                $name = tempnam(TMP_MODULE_DIR, 'module_');
-                file_put_contents($name, $contents);
-                require_once $name;
-                $className = App::className($newClass, 'Module/Module');
-                unlink($name);
-            }
-        } else {
-            require_once $path;
-        }
+        require_once $name;
+        $className = App::className($newClass, 'Module/Module');
+        unlink($name);
 
         $objectModule = new $className();
         $new = [
@@ -182,7 +173,7 @@ class ModuleManager implements ArrayAccess, Countable
 
         //Check if this module implements our default interface.
         if (!$objectModule instanceof ModuleInterface) {
-            throw new \RuntimeException(sprintf('ModuleManager::offsetSet() expects "%s" to be an instance of ModuleInterface.', $className));
+            throw new \RuntimeException(sprintf('ModuleManager::load() expects "%s" to be an instance of ModuleInterface.', $className));
         }
 
         //Prioritize.
@@ -217,6 +208,8 @@ class ModuleManager implements ArrayAccess, Countable
         }
 
         //Remove this module, also calling the __destruct method of it.
+        $object = $this->_loadedModules[$module]['object'];
+        unset($object);
         unset($this->_loadedModules[$module]);
 
         //Return the message Unloaded.

@@ -30,9 +30,10 @@ if (!function_exists('debug')) {
 ########## DEBUG ##########
 %s
 ###########################
+%s
 TEXT;
         $var = Debugger::exportVar($var, 25);
-        printf($template, $lineInfo, $var);
+        printf($template, $lineInfo, $var, PHP_EOL);
     }
 }
 if (!function_exists('pathSplit')) {
