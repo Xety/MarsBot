@@ -71,7 +71,6 @@ class Network
             throw new NetworkException('Can not read the socket while connecting to xat.', E_WARNING);
         }
 
-        $result = [];
         $result = Xml::toArray(Xml::build(Xml::repair($response)));
 
         //Send private informations to xat.

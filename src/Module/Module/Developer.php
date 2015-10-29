@@ -185,7 +185,7 @@ class Developer implements ModuleInterface
      *
      * @return string
      */
-    public function _getServerInfo()
+    protected function _getServerInfo()
     {
         if (stristr(PHP_OS, 'win')) {
             $wmi = new \COM("Winmgmts://");
