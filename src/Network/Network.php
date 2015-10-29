@@ -3,6 +3,7 @@ namespace Mars\Network;
 
 use Mars\Configure\Configure;
 use Mars\Configure\InstanceConfigTrait;
+use Mars\Network\Exception\NetworkException;
 use Mars\Network\Exception\SocketException;
 use Mars\Utility\Xml;
 
@@ -64,11 +65,23 @@ class Network
 
         //Send the login packet to xat.
         $socket->write($this->_buildLoginPacket());
-        $result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
+        $response = $socket->read();
+
+        if ($response === false) {
+            throw new NetworkException('Can not read the socket while connecting to xat.', E_WARNING);
+        }
+
+        $result = [];
+        $result = Xml::toArray(Xml::build(Xml::repair($response)));
 
         //Send private informations to xat.
         $socket->write($this->_buildPrivatePacket());
-        $result += Xml::toArray(Xml::build(Xml::repair($socket->read())));
+        $response = $socket->read();
+
+        if ($response === false) {
+            throw new NetworkException('Can not read the socket while connecting to xat.', E_WARNING);
+        }
+        $result += Xml::toArray(Xml::build(Xml::repair($response)));
 
         $this->loginInfos = $result;
     }

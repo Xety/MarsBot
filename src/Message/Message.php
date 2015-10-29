@@ -34,7 +34,7 @@ class Message
     /**
      * Code of the command
      *
-     * @var array
+     * @var string
      */
     public $commandCode;
 

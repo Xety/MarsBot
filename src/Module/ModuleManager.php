@@ -145,7 +145,6 @@ class ModuleManager implements ArrayAccess, Countable
 
         //Check if this class already exists.
         $path = MODULE_DIR . DS . $module . '.php';
-        $className = App::className($module, 'Module/Module');
 
         //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
         //After that, we create a copy and include it.

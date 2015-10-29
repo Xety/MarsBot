@@ -23,7 +23,7 @@ class UserManager implements ArrayAccess, Countable
     }
 
     /**
-     * Loads a module into the Framework and prioritize it according to our priority list.
+     * Loads an user into the Framework users list.
      *
      * @param array $user The user to load
      *

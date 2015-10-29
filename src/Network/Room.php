@@ -105,7 +105,12 @@ class Room
         }
 
         $socket->write($this->_bluidConnectionPacket($config['room']));
-        $result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
+        $response = $socket->read();
+
+        if ($response === false) {
+            throw new RoomException('Can not read the socket while joining the room.', E_WARNING);
+        }
+        $result = Xml::toArray(Xml::build(Xml::repair($response)));
 
         $network = array_merge($network, $result);
 
