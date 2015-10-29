@@ -62,6 +62,10 @@ class I implements PacketInterface
             $config[2] = 1;
         }
 
+        if (isset($config[6])) {
+            unset($config[6]);
+        }
+
         $roomInfos = array_combine($keys, $config);
 
         return $roomInfos;

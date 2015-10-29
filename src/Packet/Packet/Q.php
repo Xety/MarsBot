@@ -18,7 +18,7 @@ class Q implements PacketInterface
     {
         if (isset($data['q']['d']) && isset($data['q']['p'])) {
             $server->Socket->disconnect();
-            $server->startup(null, $data['q']['d'], $data['q']['p']);
+            $server->connect(null, $data['q']['d'], $data['q']['p']);
 
             return true;
         }

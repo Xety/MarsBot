@@ -55,16 +55,36 @@ class Server
     public $UserManager;
 
     /**
-     * Initialize the network and room instance.
+     * Startup the bot, Initialize the UserManager, ModuleManager and PakcketManager.
+     *
+     * @return void
      */
-    public function __construct()
+    public function startup()
     {
-        $this->Network = new Network();
         $this->Room = new Room();
+        $this->Network = new Network();
+
+        $this->login();
     }
 
     /**
-     * Connect to xat, join a room and Initialize the UserManager, ModuleManager and PakcketManager.
+     * Login to xat.
+     *
+     * @param bool $connect True if we must also connect to a room.
+     *
+     * @return void
+     */
+    public function login($connect = true)
+    {
+        $this->Network->startup();
+
+        if ($connect === true) {
+            $this->connect();
+        }
+    }
+
+    /**
+     * Connect the bot to a room.
      *
      * @param string|int $room The room to join.
      * @param string $host The host to connect to the room.
@@ -72,14 +92,17 @@ class Server
      *
      * @return void
      */
-    public function startup($room = null, $host = null, $port = null)
+    public function connect($room = null, $host = null, $port = null)
     {
         if (is_null($room)) {
             $room = Configure::read('Room.name');
         }
         $room = Room::getRoomInfo($room);
 
-        $this->Socket = $this->Room->join($this->Network->startup(), $room, $host, $port);
+        $array = $this->Room->join($this->Network->loginInfos, $room, $host, $port);
+
+        $this->Socket = $array['socket'];
+        $this->Network->loginInfos = $array['network'];
 
         //Initialize the UserManager.
         $this->UserManager = new UserManager();

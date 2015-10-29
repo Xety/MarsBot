@@ -28,14 +28,16 @@ class Done implements PacketInterface
 
             if ($xavi === false) {
                 $server->ModuleManager->message('Error to get the xavi of the user ' . Configure::read('Xavi.id'));
-                break;
+
+                return false;
             }
 
             $result = Xavi::post($xavi, $server->Room->loginInfos);
 
             if ($result === false) {
                 $server->ModuleManager->message('Error to save the xavi.');
-                break;
+
+                return false;
             }
 
             $server->ModuleManager->message('My xavi has been saved successfully with the MarsBot ! Thanks to Mars. :)');

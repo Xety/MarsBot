@@ -130,8 +130,11 @@ class Room implements ModuleInterface
             case 'go':
                 $roomName = $message->arguments[1];
 
-                $server->Socket->disconnect();
-                $server->startup($roomName);
+                $disconnect = $server->Socket->disconnect();
+
+                if ($disconnect == true) {
+                    $server->connect($roomName);
+                }
                 break;
 
             default:

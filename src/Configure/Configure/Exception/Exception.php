@@ -1,5 +1,5 @@
 <?php
-namespace Mars\Core\Exception;
+namespace Mars\Configure\Configure\Exception;
 
 class Exception extends \RuntimeException
 {

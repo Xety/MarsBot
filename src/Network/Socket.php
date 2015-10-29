@@ -7,7 +7,6 @@ use Mars\Validation\Validation;
 
 class Socket
 {
-
     use InstanceConfigTrait;
 
     /**

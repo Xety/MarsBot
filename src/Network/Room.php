@@ -107,11 +107,13 @@ class Room
         $socket->write($this->_bluidConnectionPacket($config['room']));
         $result = Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
-        $this->loginInfos = $result;
+        $network = array_merge($network, $result);
+
+        $this->loginInfos = $network;
 
         $socket->write($this->_buildJoinPacket($result, $network, $config['room']));
 
-        return $socket;
+        return ['socket' => $socket, 'network' => $network];
     }
 
     /**

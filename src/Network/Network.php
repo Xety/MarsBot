@@ -24,6 +24,13 @@ class Network
     ];
 
     /**
+     * The response from xat when connecting to xat.
+     *
+     * @var array
+     */
+    public $loginInfos = [];
+
+    /**
      * Constructor.
      *
      * @param array $config Network configuration, which will be merged with the base configuration.
@@ -38,7 +45,7 @@ class Network
     /**
      * Get the needed informations from xat by login the bot on xat website.
      *
-     * @return array The connection informations.
+     * @return void
      *
      * @throws \Mars\Network\Exception\SocketException When the socket is not connected.
      */
@@ -63,7 +70,7 @@ class Network
         $socket->write($this->_buildPrivatePacket());
         $result += Xml::toArray(Xml::build(Xml::repair($socket->read())));
 
-        return $result;
+        $this->loginInfos = $result;
     }
 
     /**

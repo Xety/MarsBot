@@ -20,7 +20,7 @@ class Idle implements PacketInterface
         if (isset($data['idle']['e'])) {
             //We can also send a message to the user 1 every X minutes.
             $server->Socket->disconnect();
-            $server->startup();
+            $server->connect();
 
             return true;
         }
