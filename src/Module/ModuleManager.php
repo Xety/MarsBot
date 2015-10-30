@@ -4,7 +4,7 @@ namespace Mars\Module;
 use ArrayAccess;
 use Countable;
 use DirectoryIterator;
-use Mars\Core\App;
+use Mars\Configure\Configure;
 use Mars\Utility\Inflector;
 
 class ModuleManager implements ArrayAccess, Countable
@@ -159,8 +159,10 @@ class ModuleManager implements ArrayAccess, Countable
         file_put_contents($name, $contents);
 
         require_once $name;
-        $className = App::className($newClass, 'Module/Module');
         unlink($name);
+
+        $className = Configure::read('App.namespace') . DS . 'Module' . DS . 'Module' . DS . $newClass;
+        $className = str_replace('/', '\\', rtrim($className, '\\'));
 
         $objectModule = new $className();
         $new = [

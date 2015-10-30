@@ -4,7 +4,7 @@ namespace Mars\Packet;
 use ArrayAccess;
 use Countable;
 use DirectoryIterator;
-use Mars\Core\App;
+use Mars\Configure\Configure;
 use Mars\Utility\Inflector;
 
 class PacketManager implements ArrayAccess, Countable
@@ -157,10 +157,12 @@ class PacketManager implements ArrayAccess, Countable
 
         $name = tempnam(TMP_PACKET_DIR, $packet . '_');
         file_put_contents($name, $contents);
-        require_once $name;
 
-        $className = App::className($newClass, 'Packet/Packet');
+        require_once $name;
         unlink($name);
+
+        $className = Configure::read('App.namespace') . DS . 'Packet' . DS . 'Packet' . DS . $newClass;
+        $className = str_replace('/', '\\', rtrim($className, '\\'));
 
         $objectPacket = new $className();
         $new = [

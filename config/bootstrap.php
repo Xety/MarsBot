@@ -10,7 +10,6 @@ require ROOT . DS . 'vendor' . DS . 'autoload.php';
 require APP . 'basics.php';
 
 use Mars\Configure\Configure;
-use Mars\Configure\Configure\Engine\PhpConfig;
 
 /**
  * Read configuration file and inject configuration into various
@@ -21,8 +20,7 @@ use Mars\Configure\Configure\Engine\PhpConfig;
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-    Configure::config('default', new PhpConfig());
-    Configure::load('config', 'default', false);
+    Configure::load('config');
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }

@@ -2,13 +2,18 @@
 
 namespace Mars\Configure;
 
-use Mars\Configure\Configure\ConfigEngineInterface;
-use Mars\Configure\Configure\Engine\PhpConfig;
 use Mars\Configure\Exception\Exception;
 use Mars\Utility\Hash;
 
 class Configure
 {
+    /**
+     * Extension of configuration file.
+     *
+     * @var const
+     */
+    const EXT = '.php';
+
     /**
      * Array of values currently stored in Configure.
      *
@@ -17,13 +22,6 @@ class Configure
     protected static $_values = [
         'debug' => 0
     ];
-
-    /**
-     * Configured engine classes, used to load config files from resources.
-     *
-     * @var array
-     */
-    protected static $_engines = [];
 
     /**
      * Flag to track whether or not ini_set exists.
@@ -157,57 +155,6 @@ class Configure
     }
 
     /**
-     * Add a new engine to Configure. Engines allow you to read configuration
-     * files in various formats/storage locations.
-     *
-     * To add a new engine to Configure:
-     *
-     * `Configure::config('ini', new PhpConfig());`
-     *
-     * @param string $name The name of the engine being configured. This alias is used later to
-     * read values from a specific engine.
-     * @param ConfigEngineInterface $engine The engine to append.
-     *
-     * @return void
-     */
-    public static function config($name, ConfigEngineInterface $engine)
-    {
-        static::$_engines[$name] = $engine;
-    }
-
-    /**
-     * Gets the names of the configured Engine objects.
-     *
-     * @param string|null $name Engine name.
-     *
-     * @return array Array of the configured Engine objects.
-     */
-    public static function configured($name = null)
-    {
-        if ($name) {
-            return isset(static::$_engines[$name]);
-        }
-        return array_keys(static::$_engines);
-    }
-
-    /**
-     * Remove a configured engine. This will unset the engine
-     * and make any future attempts to use it cause an Exception.
-     *
-     * @param string $name Name of the engine to drop.
-     *
-     * @return bool Success.
-     */
-    public static function drop($name)
-    {
-        if (!isset(static::$_engines[$name])) {
-            return false;
-        }
-        unset(static::$_engines[$name]);
-        return true;
-    }
-
-    /**
      * Loads stored configuration information from a resource. You can add
      * config file resource engines with `Configure::config()`.
      *
@@ -215,29 +162,28 @@ class Configure
      * runtime configuration. You can load configuration files from plugins
      * by preceding the filename with the plugin name.
      *
-     * `Configure::load('Users.user', 'default')`
+     * `Configure::load('Users.user')`
      *
      * Would load the 'user' config file using the default config engine. You can load
      * app config files by giving the name of the resource you want loaded.
      *
-     * `Configure::load('setup', 'default');`
-     *
-     * If using `default` config and no engine has been configured for it yet,
-     * one will be automatically created using PhpConfig
+     * `Configure::load('setup');`
      *
      * @param string $key name of configuration resource to load.
-     * @param string $config Name of the configured engine to use to read the resource identified by $key.
      * @param bool $merge if config files should be merged instead of simply overridden
      *
      * @return bool if file not found, void if load successful.
      */
-    public static function load($key, $config = 'default', $merge = true)
+    public static function load($key, $merge = true)
     {
-        $engine = static::_getEngine($config);
-        if (!$engine) {
-            return false;
+        $file = static::_getFilePath($key);
+
+        $return = include $file;
+        if (!is_array($return)) {
+            throw new Exception(sprintf('Config file "%s" did not return an array', $key . static::EXT));
         }
-        $values = $engine->read($key);
+
+        $values = $return;
         if ($merge) {
             $values = Hash::merge(static::$_values, $values);
         }
@@ -245,65 +191,49 @@ class Configure
     }
 
     /**
-     * Dump data currently in Configure into $key. The serialization format
-     * is decided by the config engine attached as $config. For example, if the
-     * 'default' adapter is a PhpConfig, the generated file will be a PHP
-     * configuration file loadable by the PhpConfig.
+     * Return the file path.
      *
-     * ### Usage
+     * @param string $key The file.
      *
-     * Given that the 'default' engine is an instance of PhpConfig.
-     * Save all data in Configure to the file `my_config.php`:
-     *
-     * `Configure::dump('my_config.php', 'default');`
-     *
-     * Save only the error handling configuration:
-     *
-     * `Configure::dump('error.php', 'default', ['Error', 'Exception'];`
-     *
-     * @param string $key The identifier to create in the config adapter.
-     * This could be a filename or a cache key depending on the adapter being used.
-     * @param string $config The name of the configured adapter to dump data with.
-     * @param array $keys The name of the top-level keys you want to dump.
-     * This allows you save only some data stored in Configure.
-     *
-     * @throws \Mars\Configure\Exception\Exception if the adapter does not implement a `dump` method.
-     *
-     * @return bool On success or error.
+     * @return string
      */
-    public static function dump($key, $config = 'default', $keys = [])
+    protected static function _getFilePath($key)
     {
-        $engine = static::_getEngine($config);
-        if (!$engine) {
-            throw new Exception(sprintf('There is no "%s" config engine.', $config));
-        }
-        if (!method_exists($engine, 'dump')) {
-            throw new Exception(sprintf('The "%s" config engine, does not have a dump() method.', $config));
-        }
-        $values = static::$_values;
-        if (!empty($keys) && is_array($keys)) {
-            $values = array_intersect_key($values, array_flip($keys));
-        }
-        return (bool)$engine->dump($key, $values);
+        return CONFIG . $key . static::EXT;
     }
 
     /**
-     * Get the configured engine. Internally used by `Configure::load()` and `Configure::dump()`
-     * Will create new PhpConfig for default if not configured yet.
+     * Dump data currently in Configure into $key. The serialization format
+     * will be an array.
      *
-     * @param string $config The name of the configured adapter.
+     * ### Usage
      *
-     * @return mixed Engine instance or false.
+     * Save all data in Configure to the file `my_config`:
+     *
+     * `Configure::dump('my_config');`
+     *
+     * Save only the error handling configuration:
+     *
+     * `Configure::dump('error', ['Error', 'Exception'];`
+     *
+     * @param string $key The identifier to create in the config adapter.
+     * This could be a filename or a cache key depending on the adapter being used.
+     * @param array $keys The name of the top-level keys you want to dump.
+     * This allows you save only some data stored in Configure.
+     *
+     * @return bool On success or error.
      */
-    protected static function _getEngine($config)
+    public static function dump($key, $keys = [])
     {
-        if (!isset(static::$_engines[$config])) {
-            if ($config !== 'default') {
-                return false;
-            }
-            static::config($config, new PhpConfig());
+        $values = static::$_values;
+
+        if (!empty($keys) && is_array($keys)) {
+            $values = array_intersect_key($values, array_flip($keys));
         }
-        return static::$_engines[$config];
+        $contents = '<?php' . "\n" . 'return ' . var_export($values, true) . ';';
+
+        $filename = static::_getFilePath($key);
+        return (bool)file_put_contents($filename, $contents);
     }
 
     /**

@@ -3,7 +3,6 @@ namespace Mars\Network\Http;
 
 use Mars\Configure\Configure\Exception\Exception;
 use Mars\Configure\InstanceConfigTrait;
-use Mars\Core\App;
 use Mars\Network\Http\CookieCollection;
 use Mars\Network\Http\Request;
 use Mars\Utility\Hash;
@@ -212,70 +211,6 @@ class Client
     }
 
     /**
-     * Do a PUT request.
-     *
-     * @param string $url The url or path you want to request.
-     * @param mixed $data The request data you want to send.
-     * @param array $options Additional options for the request.
-     *
-     * @return \Mars\Network\Http\Response
-     */
-    public function put($url, $data = [], array $options = [])
-    {
-        $options = $this->_mergeOptions($options);
-        $url = $this->buildUrl($url, [], $options);
-        return $this->_doRequest(Request::METHOD_PUT, $url, $data, $options);
-    }
-
-    /**
-     * Do a PATCH request.
-     *
-     * @param string $url The url or path you want to request.
-     * @param mixed $data The request data you want to send.
-     * @param array $options Additional options for the request.
-     *
-     * @return \Mars\Network\Http\Response
-     */
-    public function patch($url, $data = [], array $options = [])
-    {
-        $options = $this->_mergeOptions($options);
-        $url = $this->buildUrl($url, [], $options);
-        return $this->_doRequest(Request::METHOD_PATCH, $url, $data, $options);
-    }
-
-    /**
-     * Do a DELETE request.
-     *
-     * @param string $url The url or path you want to request.
-     * @param mixed $data The request data you want to send.
-     * @param array $options Additional options for the request.
-     *
-     * @return \Mars\Network\Http\Response
-     */
-    public function delete($url, $data = [], array $options = [])
-    {
-        $options = $this->_mergeOptions($options);
-        $url = $this->buildUrl($url, [], $options);
-        return $this->_doRequest(Request::METHOD_DELETE, $url, $data, $options);
-    }
-
-    /**
-     * Do a HEAD request.
-     *
-     * @param string $url The url or path you want to request.
-     * @param array $data The query string data you want to send.
-     * @param array $options Additional options for the request.
-     *
-     * @return \Mars\Network\Http\Response
-     */
-    public function head($url, array $data = [], array $options = [])
-    {
-        $options = $this->_mergeOptions($options);
-        $url = $this->buildUrl($url, $data, $options);
-        return $this->_doRequest(Request::METHOD_HEAD, $url, '', $options);
-    }
-
-    /**
      * Helper method for doing non-GET requests.
      *
      * @param string $method HTTP method.
@@ -394,12 +329,6 @@ class Client
         if (isset($options['cookies'])) {
             $request->cookie($options['cookies']);
         }
-        if (isset($options['auth'])) {
-            $this->_addAuthentication($request, $options);
-        }
-        if (isset($options['proxy'])) {
-            $this->_addProxy($request, $options);
-        }
         return $request;
     }
 
@@ -432,69 +361,5 @@ class Client
             'Accept' => $typeMap[$type],
             'Content-Type' => $typeMap[$type],
         ];
-    }
-
-    /**
-     * Add authentication headers to the request.
-     *
-     * Uses the authentication type to choose the correct strategy
-     * and use its methods to add headers.
-     *
-     * @param \Mars\Network\Http\Request $request The request to modify.
-     * @param array $options Array of options containing the 'auth' key.
-     *
-     * @return void
-     */
-    protected function _addAuthentication(Request $request, $options)
-    {
-        $auth = $options['auth'];
-        $adapter = $this->_createAuth($auth, $options);
-        $adapter->authentication($request, $options['auth']);
-    }
-
-    /**
-     * Add proxy authentication headers.
-     *
-     * Uses the authentication type to choose the correct strategy
-     * and use its methods to add headers.
-     *
-     * @param \Mars\Network\Http\Request $request The request to modify.
-     * @param array $options Array of options containing the 'proxy' key.
-     *
-     * @return void
-     */
-    protected function _addProxy(Request $request, $options)
-    {
-        $auth = $options['proxy'];
-        $adapter = $this->_createAuth($auth, $options);
-        $adapter->proxyAuthentication($request, $options['proxy']);
-    }
-
-    /**
-     * Create the authentication strategy.
-     *
-     * Use the configuration options to create the correct
-     * authentication strategy handler.
-     *
-     * @param array $auth The authentication options to use.
-     * @param array $options The overall request options to use.
-     *
-     * @return mixed Authentication strategy instance.
-     *
-     * @throws \Mars\Configure\Configure\Exception\Exception when an invalid strategy is chosen.
-     */
-    protected function _createAuth($auth, $options)
-    {
-        if (empty($auth['type'])) {
-            $auth['type'] = 'basic';
-        }
-        $name = ucfirst($auth['type']);
-        $class = App::className($name, 'Network/Http/Auth');
-        if (!$class) {
-            throw new Exception(
-                sprintf('Invalid authentication type %s', $name)
-            );
-        }
-        return new $class($this, $options);
     }
 }
