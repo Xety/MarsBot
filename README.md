@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/Xety/MarsBot.svg?style=flat-square)](https://packagist.org/packages/xety/marsbot)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://packagist.org/packages/xety/marsbot)
 
-A micro-framework to create a bot for Xat. (Still in Dev)
+A micro-framework to create a bot for Xat.
 
 # Requirements
 * [Library Tidy](https://php.net/manual/en/book.tidy.php)
@@ -17,7 +17,12 @@ A micro-framework to create a bot for Xat. (Still in Dev)
         * 2) `mv composer.phar /usr/local/bin/composer`
 
 # Installation
- `composer create-project --prefer-dist xety/marsbot <application_name>`
+ * `composer create-project --prefer-dist xety/marsbot <application_name>`
+ * Rename the file `config/config.sample.php` to `config/config.php`
+ * Configure your bot in the file `config/config.php`
+
+# Run
+Command line only : `php index.php`
 
 # Ressources
 * [Cake 3](https://github.com/cakephp/cakephp)
