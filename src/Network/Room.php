@@ -5,7 +5,7 @@ use Mars\Configure\Configure;
 use Mars\Configure\InstanceConfigTrait;
 use Mars\Network\Exception\RoomException;
 use Mars\Network\Exception\SocketException;
-use Mars\Network\Http\Client;
+use Mars\Network\Http;
 use Mars\Utility\Text;
 use Mars\Utility\Xml;
 
@@ -193,12 +193,12 @@ class Room
             $url = 'http://xat.com/' . $name;
         }
 
-        $http = new Client();
+        $http = new Http();
         $response = $http->get($url);
 
-        $roomId = Text::getBetween($response->body, '<a href="http://xat.com/web_gear/chat/embed.php?id=', '&GroupName=');
-        $roomName = Text::getBetween($response->body, '&GroupName=', '"');
-        $title = Text::getBetween($response->body, '<title>', '</title>');
+        $roomId = Text::getBetween($response->getBody(), '<a href="http://xat.com/web_gear/chat/embed.php?id=', '&GroupName=');
+        $roomName = Text::getBetween($response->getBody(), '&GroupName=', '"');
+        $title = Text::getBetween($response->getBody(), '<title>', '</title>');
         $title = explode(' ', $title);
 
         if (!is_numeric($roomId) || $title[0] === 'xat') {

@@ -145,23 +145,29 @@ class PacketManager implements ArrayAccess, Countable
 
         //Check if this class already exists.
         $path = PACKET_DIR . DS . $packet . '.php';
+        $className = Configure::read('App.namespace') . DS . 'Packet' . DS . 'Packet' . DS . $packet;
 
-        //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
-        //After that, we create a copy and include it.
-        $newClass = $packet . '_' . md5(mt_rand() . time());
-        $contents = preg_replace(
-            "/(class[\s]+?)" . $packet . "([\s]+?implements[\s]+?PacketInterface[\s]+?{)/",
-            "\\1" . $newClass . "\\2",
-            file_get_contents($path)
-        );
+        if (Configure::read('debug') === false) {
+            require_once $path;
+        } else {
+            //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
+            //After that, we create a copy and include it.
+            $newClass = $packet . '_' . md5(mt_rand() . time());
+            $contents = preg_replace(
+                "/(class[\s]+?)" . $packet . "([\s]+?implements[\s]+?PacketInterface[\s]+?{)/",
+                "\\1" . $newClass . "\\2",
+                file_get_contents($path)
+            );
 
-        $name = tempnam(TMP_PACKET_DIR, $packet . '_');
-        file_put_contents($name, $contents);
+            $name = tempnam(TMP_PACKET_DIR, $packet . '_');
+            file_put_contents($name, $contents);
 
-        require_once $name;
-        unlink($name);
+            require_once $name;
+            unlink($name);
 
-        $className = Configure::read('App.namespace') . DS . 'Packet' . DS . 'Packet' . DS . $newClass;
+            $className = Configure::read('App.namespace') . DS . 'Packet' . DS . 'Packet' . DS . $newClass;
+        }
+
         $className = str_replace('/', '\\', rtrim($className, '\\'));
 
         $objectPacket = new $className();

@@ -155,7 +155,7 @@ class Developer implements ModuleInterface
                 switch ($message->arguments[1]) {
                     case 'memory':
                         $memoryKo = round(memory_get_usage(true) / 1024);
-                        $memoryMo = round($memoryKo / 1024);
+                        $memoryMo = number_format($memoryKo / 1024, 1, ',', ' ');
 
                         $server->ModuleManager->message('Memory used : ' . $memoryKo . 'Ko (' . $memoryMo . 'Mo)');
                         break;
@@ -261,7 +261,7 @@ Total Memory Used : ' . round($totalMemoryUsed, 2) . 'Mo' . '(' . round($totalMe
             $phrase .= '
 Total Threads Count : ' . $threadsCount . ' threads';
 
-            $http = new Client();
+            $http = new Http();
             $response = $http->post('http://pastebin.com/api/api_post.php', [
                 'api_option' => 'paste',
                 'api_dev_key' => Configure::read('Pastebin.apiDevKey'),
@@ -271,7 +271,7 @@ Total Threads Count : ' . $threadsCount . ' threads';
                 'api_paste_code' => $phrase
             ]);
 
-            if (substr($response->body, 0, 15) === 'Bad API request') {
+            if (substr($response->getBody(), 0, 15) === 'Bad API request') {
                 return 'Erreur to post the paste on Pastebin. Error : ' . $response->body;
             }
 

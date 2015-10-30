@@ -2,7 +2,7 @@
 namespace Mars\Utility;
 
 use Mars\Configure\Configure;
-use Mars\Network\Http\Client;
+use Mars\Network\Http;
 use Mars\Utility\Inflector;
 
 class Power
@@ -245,7 +245,7 @@ Member Flood Trust : ' . $type;
         $phrase .= '
 Flood Threshold : ' . $type;
 
-        $http = new Client();
+        $http = new Http();
         $response = $http->post('http://pastebin.com/api/api_post.php', [
             'api_option' => 'paste',
             'api_dev_key' => Configure::read('Pastebin.apiDevKey'),
@@ -255,7 +255,7 @@ Flood Threshold : ' . $type;
             'api_paste_code' => $phrase
         ]);
 
-        if (substr($response->body, 0, 15) === 'Bad API request') {
+        if (substr($response->getBody(), 0, 15) === 'Bad API request') {
             return 'Erreur to post the paste on Pastebin. Error : ' . $response->body;
         }
 

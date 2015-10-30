@@ -145,23 +145,29 @@ class ModuleManager implements ArrayAccess, Countable
 
         //Check if this class already exists.
         $path = MODULE_DIR . DS . $module . '.php';
+        $className = Configure::read('App.namespace') . DS . 'Module' . DS . 'Module' . DS . $module;
 
-        //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
-        //After that, we create a copy and include it.
-        $newClass = $module . '_' . md5(mt_rand() . time());
-        $contents = preg_replace(
-            "/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?ModuleInterface[\s]+?{)/",
-            "\\1" . $newClass . "\\2",
-            file_get_contents($path)
-        );
+        if (Configure::read('debug') === false) {
+            require_once $path;
+        } else {
+            //Here, we load the file's contents first, then use preg_replace() to replace the original class-name with a random one.
+            //After that, we create a copy and include it.
+            $newClass = $module . '_' . md5(mt_rand() . time());
+            $contents = preg_replace(
+                "/(class[\s]+?)" . $module . "([\s]+?implements[\s]+?ModuleInterface[\s]+?{)/",
+                "\\1" . $newClass . "\\2",
+                file_get_contents($path)
+            );
 
-        $name = tempnam(TMP_MODULE_DIR, $module . '_');
-        file_put_contents($name, $contents);
+            $name = tempnam(TMP_MODULE_DIR, $module . '_');
+            file_put_contents($name, $contents);
 
-        require_once $name;
-        unlink($name);
+            require_once $name;
+            unlink($name);
 
-        $className = Configure::read('App.namespace') . DS . 'Module' . DS . 'Module' . DS . $newClass;
+            $className = Configure::read('App.namespace') . DS . 'Module' . DS . 'Module' . DS . $newClass;
+        }
+
         $className = str_replace('/', '\\', rtrim($className, '\\'));
 
         $objectModule = new $className();

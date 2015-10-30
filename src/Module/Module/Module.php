@@ -182,6 +182,12 @@ class Module implements ModuleInterface
                 break;
 
             case 'unload':
+                //Prevent for loading a file in the memory for nothing.
+                if (Configure::read('debug') === false) {
+                    $server->ModuleManager->message('You can\'t unload a Module when the debug is false.');
+                    break;
+                }
+
                 //Unload the Module.
                 $module = $server->ModuleManager->unload($message->arguments[1]);
 
@@ -194,6 +200,12 @@ class Module implements ModuleInterface
                 break;
 
             case 'reload':
+                //Prevent for loading a file in the memory for nothing.
+                if (Configure::read('debug') === false) {
+                    $server->ModuleManager->message('You can\'t reload a Module when the debug is false.');
+                    break;
+                }
+
                 //Check if we must reload all Modules.
                 if ($message->arguments[1] == "all") {
                     //Get the list of the loaded Modules.

@@ -2,7 +2,7 @@
 namespace Mars\Utility;
 
 use Mars\Configure\Configure;
-use Mars\Network\Http\Client;
+use Mars\Network\Http;
 
 class Xavi
 {
@@ -19,10 +19,10 @@ class Xavi
             return false;
         }
 
-        $http = new Client();
+        $http = new Http();
         $response = $http->get('http://xat.com/json/xavi/get.php', ['u' => $id]);
 
-        return $response->body;
+        return $response->getBody();
     }
 
     /**
@@ -35,7 +35,8 @@ class Xavi
      */
     public static function post($xavi, $infos = [])
     {
-        $http = new Client();
+        $http = new Http();
+        $http->setHeader('Content-Type', 'application/x-www-form-urlencoded');
         $response = $http->post(
             'http://xat.com/json/xavi/put.php',
             [
@@ -48,15 +49,10 @@ class Xavi
                 'v' => 'undefined',
                 'i' => $infos['y']['i'],
                 'xavi' => $xavi
-            ],
-            [
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded'
-                ]
             ]
         );
 
-        if ($response->isOk() && $response->body == "OK") {
+        if ($response->isOk() && $response->getBody() == "OK") {
             return true;
         }
 
